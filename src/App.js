@@ -2,7 +2,7 @@ import {useEffect, useState} from 'react';
 import './App.css';
 import http from "./services/http.service";
 import TopBar from "./TopBar";
-import StatisticCircle from "./StatisticCircle";
+import MetricContainer from "./MetricContainer";
 
 function App() {
 
@@ -19,9 +19,11 @@ function App() {
     return (
         <div className="App">
             <TopBar/>
-            <StatisticCircle title={`This week's attendance`}/>
-            <StatisticCircle title={`This month's attendance`}/>
-            <StatisticCircle title={`This week's attendance`}/>
+            <div style={{display:'flex', flexDirection:'row', flexWrap:'wrap', }}>
+                <MetricContainer title={`Overall attendance`} percentage={50} diff={10}/>
+                <MetricContainer title={`This week's attendance`} percentage={60} diff={-10}/>
+                <MetricContainer title={`This month's attendance`} percentage={70} diff={0}/>
+            </div>
         </div>
     );
 }

@@ -14,7 +14,7 @@ function DropDown({title}) {
             {label: "Databases for Developers", value: 2},
             {label: "Large Systems Development", value: 3},
         ]);
-    })
+    }, [])
 
     const customStyles = {
         control: (css) => ({
