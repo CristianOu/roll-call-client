@@ -29,10 +29,9 @@ function DropDown({title}) {
         }),
         menu: base => ({
             ...base,
-            width: 300,
-            height: 30,
-            fontSize: 20,
-            textAlign: 'left'
+            fontSize:20,
+            textAlign: 'left',
+            zIndex:999,
         })
     }
 
@@ -47,8 +46,8 @@ function DropDown({title}) {
                 colors: {
                     ...theme.colors,
                     text: "black",
-                    primary25: "white",
-                    primary: "black",
+                    primary25: "#F5F5F5",
+                    primary: "#DCDCDC",
                 }
             })}/>
         </div>
