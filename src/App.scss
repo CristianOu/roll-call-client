@@ -1,4 +1,14 @@
+@import "sass/variables.scss";
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
 .App {
   text-align: center;
   font-size: 40px;
+  background-color: $btn-primary;
+  width: 100px;
+  height: 100px;
 }
