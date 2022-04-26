@@ -1,9 +1,13 @@
-import React from 'react'
+import React from 'react';
 
-function RollCall() {
+
+function RollCall({className}) {
   return (
-    <div>RollCall</div>
-  )
+    <div className={className}>
+      <div>header</div>
+      <div>content</div>
+    </div>
+  );
 }
 
 export default RollCall;

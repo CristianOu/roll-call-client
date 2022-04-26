@@ -1,4 +1,18 @@
+body {
+  margin: 0;
+  padding: 0;
+}
+
 .App {
-  text-align: center;
-  font-size: 40px;
+  display: flex;
+  font-size: clamp(1.0rem, 4vw, 2.0rem);
+
+  .side-bar-column {
+    min-width: 200px;
+    background-color: rgb(160, 175, 170);
+  }
+
+  .roll-call-page-container {
+    display: flex;
+  }
 }
