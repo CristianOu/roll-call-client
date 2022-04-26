@@ -45,9 +45,6 @@ function DropDown({title}) {
                 borderRadius: 0,
                 colors: {
                     ...theme.colors,
-                    text: "black",
-                    primary25: "#F5F5F5",
-                    primary: "#DCDCDC",
                 }
             })}/>
         </div>

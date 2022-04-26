@@ -19,13 +19,13 @@ function MetricContainer({title, percentage, diff}) {
                 <text style={{fontSize: 20,}}>{title}</text>
                 <text>{`${percentage}%`}</text>
             </div>
-            <div className={`c100 p${percentage} small dark`}>
+            <div className={`c100 p${percentage} small dark`} style={{backgroundColor:iconName === 'arrowUp' ? '#E6FBD9' : '#FFE8D7'}}>
                 <span>
                     <img src={require(`./images/${iconName}.png`)} style={{width:20, height:20}} alt={''}/>
                 </span>
-                <div className="slice">
-                    <div className="bar"/>
-                    <div className="fill"/>
+                <div className="slice"  >
+                    <div className="bar" style={{borderColor: iconName === 'arrowUp' ? '#44C13C' : '#FF513A'}}/>
+                    <div className="fill" style={{borderColor: iconName === 'arrowUp' ? '#44C13C' : '#FF513A'}}/>
                 </div>
             </div>
         </div>

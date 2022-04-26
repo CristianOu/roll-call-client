@@ -20,9 +20,9 @@ function App() {
         <div className="App">
             <TopBar/>
             <div style={{display:'flex', flexDirection:'row', flexWrap:'wrap', }}>
-                <MetricContainer title={`Overall attendance`} percentage={50} diff={10}/>
-                <MetricContainer title={`This week's attendance`} percentage={60} diff={-10}/>
-                <MetricContainer title={`This month's attendance`} percentage={70} diff={0}/>
+                <MetricContainer title={`Overall attendance`} percentage={1} diff={10}/>
+                <MetricContainer title={`This week's attendance`} percentage={75} diff={-10}/>
+                <MetricContainer title={`This month's attendance`} percentage={100} diff={0}/>
             </div>
         </div>
     );
