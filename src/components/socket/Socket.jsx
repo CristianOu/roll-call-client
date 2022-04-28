@@ -6,12 +6,11 @@ const socket = socketIOClient(ENDPOINT);
 export default function ClientComponent() {
     useEffect(() => {
         socket.on("codeGenerated", data => {
-            console.log("code generated ",data);
-            console.log(data);
+            //console.log("code generated ",data);
             setTimeout(() => {
-                console.log('Timed out');
+                //console.log('Timed out');
                 socket.emit('deleteCode', {code: data.code, classTeacherId: data.classTeacherId});
-            }, 1000 * 60 * 1);
+            }, 1000 * 60 * 30); //30 minutes
         });
 
         socket.on("joinSuccessful", data => {
@@ -33,13 +32,13 @@ export default function ClientComponent() {
 }
 
 function generateCode(teacherId) {
-    teacherId = 1;
-    console.log("generate code", teacherId);
+    //teacherId = 1;
+    //console.log("generate code", teacherId);
     socket.emit('generateCode', teacherId);
 }
 
 function joinClass(code, studentId) {
     code = document.getElementById('code').value;
-    studentId = 10;
+    //studentId = 10;
     socket.emit('attendLecture', {code, studentId});
 }
