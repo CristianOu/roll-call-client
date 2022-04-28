@@ -8,11 +8,11 @@ import {
 } from "react-router-dom";
 import RollCall from './pages/RollCall';
 import SideBar from './components/side-bar/SideBar';
+import Socket from './components/socket/Socket';
 
 function App() {
 
   const [data, setData] = useState(0);
-  
   useEffect(() => {
     http
       .get("/")
@@ -23,6 +23,7 @@ function App() {
 
   return (
     <div className="App">
+      <Socket></Socket>
       <SideBar className='side-bar-column'/>
       <Router>
         <Routes>
