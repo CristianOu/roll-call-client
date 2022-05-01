@@ -23,8 +23,8 @@ function MetricContainer({title, percentage, diff}) {
                 <span>
                     <img src={require(`./images/${iconName}.png`)} style={{width:20, height:20}} alt={''}/>
                 </span>
-                <div className="slice"  >
-                    <div className="bar" style={{borderColor: iconName === 'arrowUp' ? '#44C13C' : '#FF513A'}}/>
+                <div className="slice" style={{  }}>
+                    <div className="bar" style={{borderColor: iconName === 'arrowUp' ? '#44C13C' : '#FF513A', transform: `rotate(${3.6 * percentage}deg)`}}/>
                     <div className="fill" style={{borderColor: iconName === 'arrowUp' ? '#44C13C' : '#FF513A'}}/>
                 </div>
             </div>
