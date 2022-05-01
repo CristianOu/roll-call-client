@@ -31,7 +31,7 @@ function MetricContainer({title, percentage, diff}) {
             borderRadius: '50%',
             borderColor: iconName === 'arrowUp' ? '#44C13C' : '#FF513A'
         },
-    }
+    };
     useEffect(() => {
         diff >= 0 ? setIconName('arrowUp') : setIconName('arrowDown');
     }, [diff]);
@@ -41,20 +41,13 @@ function MetricContainer({title, percentage, diff}) {
                 <text style={styles.percentageTitle}>{title}</text>
                 <text>{`${percentage}%`}</text>
             </div>
-            <div className={`c100 p${percentage}`}
-                 style={{backgroundColor: iconName === 'arrowUp' ? '#E6FBD9' : '#FFE8D7'}}>
+            <div className='c100' style={{backgroundColor: iconName === 'arrowUp' ? '#E6FBD9' : '#FFE8D7'}}>
                 <span>
                     <img src={require(`./images/${iconName}.png`)} style={{width: 20, height: 20}} alt={''}/>
                 </span>
-                <div className="slice" style={{clip: percentage > 50 && 'rect(auto, auto, auto, auto)'}}>
-                    <div className="bar" style={{
-                        ...styles.fillBarStyle,
-                        transform: `rotate(${3.6 * percentage}deg)`,
-                    }}/>
-                    <div className="fill" style={{
-                        ...percentage > 50 && styles.fillBarStyle,
-                        transform: percentage > 50 && 'rotate(180deg)',
-                    }}/>
+                <div className='slice' style={{clip: percentage > 50 && 'rect(auto, auto, auto, auto)'}}>
+                    <div className='bar' style={{...styles.fillBarStyle, transform: `rotate(${3.6 * percentage}deg)`}}/>
+                    <div className='fill' style={{...percentage > 50 && styles.fillBarStyle, transform: percentage > 50 && 'rotate(180deg)'}}/>
                 </div>
             </div>
         </div>
