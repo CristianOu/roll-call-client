@@ -32,11 +32,7 @@ function MetricContainer({title, percentage, diff}) {
         },
     }
     useEffect(() => {
-        if (diff >= 0) {
-            setIconName('arrowUp')
-        } else {
-            setIconName('arrowDown')
-        }
+        diff >= 0 ? setIconName('arrowUp') : setIconName('arrowDown');
     }, [diff]);
     return (
         <div style={styles.outerContainer}>
