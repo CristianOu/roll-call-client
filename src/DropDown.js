@@ -2,7 +2,7 @@ import {useEffect, useState} from 'react';
 import './App.css';
 import Select from 'react-select';
 
-function DropDown({title}) {
+function DropDown({title, handleChange}) {
 
     const [options, setOptions] = useState([]);
 
@@ -38,17 +38,19 @@ function DropDown({title}) {
     return (
         <div className="drop-down">
             <text style={{fontSize: 20,}}>{`${title}: `}</text>
-            <Select components={{
-                IndicatorSeparator: () => null
-            }} styles={customStyles} options={options} theme={theme => ({
-                ...theme,
-                borderRadius: 0,
-                colors: {
-                    ...theme.colors,
-                }
-            })}/>
+            <Select
+                onChange={handleChange}
+                components={{IndicatorSeparator: () => null}}
+                styles={customStyles} options={options}
+                theme={theme => ({
+                    ...theme,
+                    borderRadius: 0,
+                    colors: {
+                        ...theme.colors,
+                    }
+                })}
+            />
         </div>
-
     );
 }
 
