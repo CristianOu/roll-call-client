@@ -4,6 +4,8 @@ import styled from "styled-components";
 import MyTable from "./MyTable";
 import React, {useEffect, useMemo, useState} from "react";
 import DropDown from "./DropDown";
+import {getTeacherCourses, getTeacherStatistics} from "./services/api";
+import {mapServerDataToOptions} from "./services/helperFunctions";
 
 const Styles = styled.div`
   table {
@@ -146,9 +148,8 @@ const studentColumns = [
 
 function StatisticsPage() {
     //TODO: get user role from app state
-    const userRole = 'teacher';
-
-    const [tableColumns, setTableColumns] = useState([]);
+    const isTeacher = true;
+    const tableColumns = isTeacher ? teacherColumns : studentColumns;
     const [tableData, setTableData] = useState([]);
     const [selectedCourse, setSelectedCourse] = useState('');
     const [metrics, setMetrics] = useState({
@@ -159,35 +160,32 @@ function StatisticsPage() {
         monthDiff: 0,
         weekDiff: 0,
     });
+    const [teacherStatistics, setTeacherStatistics] = useState([]);
+    const [error, setError] = useState(undefined);
+    const [loading, setLoading] = useState(true);
+    const [courses, setCourses] = useState([]);
 
     useEffect(() => {
-        if (userRole === 'teacher') {
-            setTableColumns(teacherColumns);
-            //TODO: get data from server
-            const metricsFromServer = {
-                overall: 60,
-                week: 30,
-                month: 80,
-                overallDiff: -10,
-                monthDiff: 40,
-                weekDiff: 90,
-            };
-            setMetrics(metricsFromServer);
-            const data = [
-                {
-                    firstName: 'John',
-                    lastName: 'Smith',
-                    email: 'j.smith@stud.kea.dk',
-                    attendance: 59,
-                },
-                {
-                    firstName: 'George',
-                    lastName: 'Peterson',
-                    email: 'g.peterson@stud.kea.dk',
-                    attendance: 5,
+        if (isTeacher) {
+            Promise.all([
+                getTeacherStatistics(1, 1, 1),
+                getTeacherCourses(1)
+            ]).then((response) => {
+                const [teacherStatistics, teacherCourses] = response;
+                if (teacherStatistics.data.message !== 'Something went wrong' &&
+                    teacherCourses.data.message !== 'Something went wrong') {
+                    setTeacherStatistics(teacherStatistics.data);
+                    setCourses(mapServerDataToOptions(teacherCourses.data));
+                    setLoading(false);
+                    setError(undefined);
+                } else {
+                    setLoading(false);
+                    setError('Something went wrong');
                 }
-            ];
-            setTableData(data);
+            }).catch(() => {
+                setLoading(false);
+                setError('Something went wrong');
+            });
         } else {
             const metricsFromServer = {
                 overall: 60,
@@ -198,7 +196,6 @@ function StatisticsPage() {
                 weekDiff: 90,
             };
             setMetrics(metricsFromServer);
-            setTableColumns(studentColumns);
             //TODO: if student, get courses and attendance from server
             const response = [
                 {
@@ -222,28 +219,43 @@ function StatisticsPage() {
         setSelectedCourse(option.label);
     }
 
-    return (
-        <div style={{marginLeft: '20px', marginRight: '20px'}}>
-            <DropDown title={'Course'} handleChange={handleCourseChange}/>
-            <div style={{
-                display: 'flex',
-                flexDirection: 'row',
-                flexWrap: 'wrap',
-                justifyContent: 'space-between',
-                marginTop: '30px',
-                marginBottom: '30px'
-            }}>
-                <MetricContainer title={`Overall attendance`} percentage={metrics.overall} diff={metrics.overallDiff}/>
-                <MetricContainer title={`This week's attendance`} percentage={metrics.week} diff={metrics.weekDiff}/>
-                <MetricContainer title={`This month's attendance`} percentage={metrics.month} diff={metrics.monthDiff}/>
+    const render = () => {
+        if (error) {
+            return <text>{error}</text>
+        }
+
+        if (loading) {
+            return <text>Loading...</text>
+        }
+
+        return (
+            <div style={{marginLeft: '20px', marginRight: '20px'}}>
+                <DropDown title={'Course'} handleChange={handleCourseChange} options={courses}/>
+                <div style={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    flexWrap: 'wrap',
+                    justifyContent: 'space-between',
+                    marginTop: '30px',
+                    marginBottom: '30px'
+                }}>
+                    <MetricContainer title={`Overall attendance`} percentage={metrics.overall}
+                                     diff={metrics.overallDiff}/>
+                    <MetricContainer title={`This week's attendance`} percentage={metrics.week}
+                                     diff={metrics.weekDiff}/>
+                    <MetricContainer title={`This month's attendance`} percentage={metrics.month}
+                                     diff={metrics.monthDiff}/>
+                </div>
+                {isTeacher &&
+                <Styles>
+                    <MyTable columns={tableColumns} data={tableData}/>
+                </Styles>
+                }
             </div>
-            {userRole === 'teacher' &&
-            <Styles>
-                <MyTable columns={tableColumns} data={tableData}/>
-            </Styles>
-            }
-        </div>
-    );
+        );
+    }
+
+    return render();
 }
 
 export default StatisticsPage;

@@ -1,21 +1,7 @@
-import {useEffect, useState} from 'react';
 import './App.css';
 import Select from 'react-select';
 
-function DropDown({title, handleChange}) {
-
-    const [options, setOptions] = useState([]);
-
-    useEffect(() => {
-        // TODO: call api to get courses for the logged in user
-        // set options array
-        setOptions([
-            {label: "Testing", value: 1},
-            {label: "Databases for Developers", value: 2},
-            {label: "Large Systems Development", value: 3},
-        ]);
-    }, [])
-
+function DropDown({title, handleChange, options}) {
     const customStyles = {
         control: (css) => ({
             ...css,
