@@ -5,7 +5,7 @@ import MyTable from "./MyTable";
 import React, {useEffect, useMemo, useState} from "react";
 import DropDown from "./DropDown";
 import {getTeacherCourses, getTeacherStatistics} from "./services/api";
-import {mapServerDataToOptions} from "./services/helperFunctions";
+import {mapResponseToOptions, mapResponseToTableData} from "./services/helperFunctions";
 
 const Styles = styled.div`
   table {
@@ -147,35 +147,46 @@ const studentColumns = [
     }];
 
 function StatisticsPage() {
-    //TODO: get user role from app state
+    // TODO: get user role from app state
     const isTeacher = true;
+    // TODO: get userId from app state
+    const userId = 1;
     const tableColumns = isTeacher ? teacherColumns : studentColumns;
     const [tableData, setTableData] = useState([]);
-    const [selectedCourse, setSelectedCourse] = useState('');
-    const [metrics, setMetrics] = useState({
-        overall: 0,
-        week: 0,
-        month: 0,
-        overallDiff: 0,
-        monthDiff: 0,
-        weekDiff: 0,
-    });
-    const [teacherStatistics, setTeacherStatistics] = useState([]);
+    const [selectedCourse, setSelectedCourse] = useState(undefined);
+    const [metrics, setMetrics] = useState({overall:0, week:0, month:0});
     const [error, setError] = useState(undefined);
     const [loading, setLoading] = useState(true);
     const [courses, setCourses] = useState([]);
 
     useEffect(() => {
         if (isTeacher) {
-            Promise.all([
-                getTeacherStatistics(1, 1, 1),
-                getTeacherCourses(1)
-            ]).then((response) => {
-                const [teacherStatistics, teacherCourses] = response;
-                if (teacherStatistics.data.message !== 'Something went wrong' &&
-                    teacherCourses.data.message !== 'Something went wrong') {
-                    setTeacherStatistics(teacherStatistics.data);
-                    setCourses(mapServerDataToOptions(teacherCourses.data));
+            getTeacherCourses(userId).then((response) => {
+                if (response.data.message !== 'Something went wrong') {
+                    setCourses(mapResponseToOptions(response.data));
+                    setLoading(false);
+                    setError(undefined);
+                } else {
+                    setLoading(false);
+                    setError('Something went wrong');
+                }
+            }).catch(() => {
+                setLoading(false);
+                setError('Something went wrong');
+            })
+        }
+    }, []);
+
+    useEffect(() => {
+        if (isTeacher && courses.length > 0) {
+            getTeacherStatistics(userId, selectedCourse.class_id, selectedCourse.course_id).then((response) => {
+                if (response.data.message !== 'Something went wrong') {
+                    setMetrics({
+                        overall: response.data['classAttendance'],
+                        week: response.data['weeklyAttendance'],
+                        month: response.data['monthlyAttendance']
+                    });
+                    setTableData(mapResponseToTableData(response.data['studentsAttendance']));
                     setLoading(false);
                     setError(undefined);
                 } else {
@@ -187,36 +198,37 @@ function StatisticsPage() {
                 setError('Something went wrong');
             });
         } else {
-            const metricsFromServer = {
-                overall: 60,
-                week: 30,
-                month: 80,
-                overallDiff: -10,
-                monthDiff: 40,
-                weekDiff: 90,
-            };
-            setMetrics(metricsFromServer);
-            //TODO: if student, get courses and attendance from server
-            const response = [
-                {
-                    course: 'Development of Large Systems',
-                    attendance: 50,
-                },
-                {
-                    course: 'Testing',
-                    attendance: 40,
-                },
-                {
-                    course: 'Databases for Developers',
-                    attendance: 90,
-                },
-            ];
-            setTableData(response);
+            // TODO: Do it for the students...
+            // const metricsFromServer = {
+            //     overall: 60,
+            //     week: 30,
+            //     month: 80,
+            //     overallDiff: -10,
+            //     monthDiff: 40,
+            //     weekDiff: 90,
+            // };
+            // setMetrics(metricsFromServer);
+            // //TODO: if student, get courses and attendance from server
+            // const response = [
+            //     {
+            //         course: 'Development of Large Systems',
+            //         attendance: 50,
+            //     },
+            //     {
+            //         course: 'Testing',
+            //         attendance: 40,
+            //     },
+            //     {
+            //         course: 'Databases for Developers',
+            //         attendance: 90,
+            //     },
+            // ];
+            // setTableData(response);
         }
     }, [selectedCourse])
 
     const handleCourseChange = (option) => {
-        setSelectedCourse(option.label);
+        setSelectedCourse(option.value);
     }
 
     const render = () => {

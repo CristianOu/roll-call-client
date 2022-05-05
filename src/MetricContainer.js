@@ -1,8 +1,10 @@
 import './App.css';
-import {useEffect, useState} from "react";
+// import {useEffect, useState} from "react";
 
 function MetricContainer({title, percentage, diff}) {
-    const [iconName, setIconName] = useState('arrowUp');
+
+    // const [iconName, setIconName] = useState('arrowUp');
+
     const styles = {
         outerContainer: {
             display: 'flex',
@@ -28,21 +30,23 @@ function MetricContainer({title, percentage, diff}) {
             height: '0.84em',
             clip: 'rect(0em, 0.5em, 1em, 0em)',
             borderRadius: '50%',
-            borderColor: iconName === 'arrowUp' ? '#44C13C' : '#FF513A'
+            borderColor: '#44C13C'
         },
     };
-    useEffect(() => {
-        diff >= 0 ? setIconName('arrowUp') : setIconName('arrowDown');
-    }, [diff]);
+
+    // useEffect(() => {
+    //     diff >= 0 ? setIconName('arrowUp') : setIconName('arrowDown');
+    // }, [diff]);
+
     return (
         <div style={styles.outerContainer}>
             <div style={styles.percentageContainer}>
                 <text style={styles.percentageTitle}>{title}</text>
                 <text>{`${percentage}%`}</text>
             </div>
-            <div className='c100' style={{backgroundColor: iconName === 'arrowUp' ? '#E6FBD9' : '#FFE8D7'}}>
+            <div className='c100' style={{backgroundColor: '#E6FBD9'}}>
                 <span>
-                    <img src={require(`./images/${iconName}.png`)} style={{width: 20, height: 20}} alt={''}/>
+                    {/*<img src={require(`./images/${iconName}.png`)} style={{width: 20, height: 20}} alt={''}/>*/}
                 </span>
                 <div className='slice' style={{clip: percentage > 50 && 'rect(auto, auto, auto, auto)'}}>
                     <div className='bar' style={{...styles.fillBarStyle, transform: `rotate(${3.6 * percentage}deg)`}}/>
