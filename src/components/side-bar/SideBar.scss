@@ -1,2 +1,47 @@
-//empty
+@use "../../sass/main.scss" as main;
 
+.logo {
+  height: 80px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: main.$fs4;
+  cursor: pointer;
+}
+
+.options-container{
+  display: flex;
+  flex-direction: column;
+  height: calc(100% - 80px);
+  justify-content: space-between;
+
+  .options-wrapper {
+    display: block;
+    font-size: main.$fs2;
+
+    .option-container {
+      display: flex;
+      padding: 1vw 0vw 1vw 2.5vw;
+      transition: all .1s;
+      cursor: pointer;
+
+      &:hover {
+        background-color: #242D35;
+        border-right: 4px solid #6E6EF7;
+        transition: background-color .1s;
+      }
+
+      &:active {
+        background-color: #20282f;
+      }
+
+      .icon {
+        margin-right: 1vw;
+      }
+    }
+  }
+
+  .bottom-option {
+    margin-bottom: 10px;
+  }
+}

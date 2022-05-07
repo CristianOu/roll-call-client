@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@fontsource/plus-jakarta-sans": "^4.5.8",
     "@tanstack/react-table": "^8.0.0-alpha.58",
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.1.1",
