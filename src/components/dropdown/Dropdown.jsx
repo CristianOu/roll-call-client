@@ -1,8 +1,8 @@
 import {useEffect, useState} from 'react';
-import './App.css';
+import '../../App.css';
 import Select from 'react-select';
 
-function DropDown({title, handleChange}) {
+function Dropdown({title, handleChange}) {
 
     const [options, setOptions] = useState([]);
 
@@ -54,4 +54,4 @@ function DropDown({title, handleChange}) {
     );
 }
 
-export default DropDown;
+export default Dropdown;

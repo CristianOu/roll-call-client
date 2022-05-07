@@ -1,4 +1,4 @@
-import './App.css';
+import '../../App.css';
 import React from "react";
 import {useAsyncDebounce, useFilters, useGlobalFilter, useTable} from "react-table";
 import {matchSorter} from 'match-sorter';

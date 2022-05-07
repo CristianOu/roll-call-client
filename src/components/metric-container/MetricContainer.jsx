@@ -1,4 +1,4 @@
-import './App.css';
+import '../../App.css';
 import {useEffect, useState} from "react";
 
 function MetricContainer({title, percentage, diff}) {
@@ -42,7 +42,7 @@ function MetricContainer({title, percentage, diff}) {
             </div>
             <div className='c100' style={{backgroundColor: iconName === 'arrowUp' ? '#E6FBD9' : '#FFE8D7'}}>
                 <span>
-                    <img src={require(`./images/${iconName}.png`)} style={{width: 20, height: 20}} alt={''}/>
+                    <img src={require(`../../images/${iconName}.png`)} style={{width: 20, height: 20}} alt={''}/>
                 </span>
                 <div className='slice' style={{clip: percentage > 50 && 'rect(auto, auto, auto, auto)'}}>
                     <div className='bar' style={{...styles.fillBarStyle, transform: `rotate(${3.6 * percentage}deg)`}}/>

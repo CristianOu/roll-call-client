@@ -1,7 +1,7 @@
 import {useEffect, useState} from 'react';
 import './App.css';
 import http from "./services/http.service";
-import StatisticsPage from "./StatisticsPage";
+import StatisticsPage from "./pages/StatisticsPage";
 import SideBar from './components/side-bar/SideBar';
 import "@fontsource/plus-jakarta-sans"; // Defaults to weight 400.
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
