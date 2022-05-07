@@ -8,8 +8,6 @@ function RollCall({ className }) {
       <TopBar />
 
       <UtilityBar />
-      <div>header</div>
-      <div>content</div>
     </div>
   );
 }
