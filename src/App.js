@@ -1,5 +1,5 @@
 import {useEffect, useState} from 'react';
-import './App.css';
+import './App.scss';
 import http from "./services/http.service";
 import StatisticsPage from "./pages/StatisticsPage";
 import SideBar from './components/side-bar/SideBar';
@@ -25,7 +25,7 @@ function App() {
       <Router>
         <Routes>
           <Route path="/" element={<RollCall className='roll-call-page-container' />}/>
-          <Route path="/statistics" element={<StatisticsPage />}/>
+          <Route path="/statistics" element={<StatisticsPage />} className='roll-call-page-container'/>
         </Routes>
       </Router>
     </div>
