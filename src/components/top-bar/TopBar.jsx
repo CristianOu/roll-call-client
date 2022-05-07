@@ -1,4 +1,3 @@
-import '../../App.css';
 import Dropdown from '../dropdown/Dropdown';
 import './TopBar.scss';
 import CustomButton from '../custom-button/CustomButton';
