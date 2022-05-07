@@ -8,6 +8,7 @@ import {
 } from "react-router-dom";
 import RollCall from './pages/RollCall';
 import SideBar from './components/side-bar/SideBar';
+import "@fontsource/plus-jakarta-sans"; // Defaults to weight 400.
 
 function App() {
 
@@ -21,9 +22,11 @@ function App() {
       })
   }, []);
 
+  console.log(data);
+
   return (
-    <div className="App">
-      <SideBar className='side-bar-column'/>
+    <div className='App'>
+      <SideBar className='side-bar-container'/>
       <Router>
         <Routes>
           <Route path="/" element={<RollCall className='roll-call-page-container' />}/>          
