@@ -9,6 +9,7 @@ body {
 .App {
   display: flex;
   font-size: main.$fs1;
+  background-color: main.$background-color;
 
   .side-bar-container {
     min-width: 220px;
@@ -21,5 +22,7 @@ body {
 
   .roll-call-page-container {
     display: flex;
+    flex-direction: column;
+    width: 100%;
   }
 }

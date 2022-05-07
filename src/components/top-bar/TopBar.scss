@@ -1,0 +1,9 @@
+@use "../../sass/main.scss" as main;
+
+.top-bar {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 20px;
+
+  background-color: main.$component-box-color;
+}

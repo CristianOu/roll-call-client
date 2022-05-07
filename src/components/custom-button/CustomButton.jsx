@@ -1,9 +1,10 @@
 import React from 'react';
+import './CustomButton.scss';
 
 function CustomButton({ title }) {
   return (
-    <div className="btn-wrapper-small">
-      <h5>{title}</h5>
+    <div className="btn btn-wrapper-small">
+      <span className="btn-text">{title}</span>
     </div>
   );
 }

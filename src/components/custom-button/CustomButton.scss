@@ -1,3 +1,31 @@
-.btn-wrapper-small {
-  background-color: $btn-primary;
+@use "../../sass/main.scss" as main;
+
+.btn {
+  background-color: main.$btn-primary-color;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &.btn-wrapper-small {
+    width: 120px;
+    height: 40px;
+    border-radius: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .btn-text {
+      color: white;
+      user-select: none;
+    }
+  }
+
+  &:hover {
+    opacity: 0.75;
+    transition: all 0.2s ease;
+  }
+
+  &:active {
+    background-color: main.$btn-primary-active-color;
+  }
 }
+
