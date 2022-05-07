@@ -1,26 +1,12 @@
-import { useEffect, useState } from 'react';
-import './App.scss';
+import {useEffect, useState} from 'react';
+import './App.css';
 import http from "./services/http.service";
-import {
-  BrowserRouter as Router,
-  Route,
-  Routes
-} from "react-router-dom";
-import RollCall from './pages/RollCall';
-import SideBar from './components/side-bar/SideBar';
+import StatisticsPage from "./StatisticsPage";
 
 function App() {
 
-  const [data, setData] = useState(0);
-  
-  useEffect(() => {
-    http
-      .get("/")
-      .then((res) => {
-        setData(res.data);
-      })
-  }, []);
-
+    const [data, setData] = useState(0);
+        
   return (
     <div className="App">
       <SideBar className='side-bar-column'/>
