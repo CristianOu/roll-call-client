@@ -1,6 +1,7 @@
 @use "../../sass/main.scss" as main;
 
 .btn {
+  all: unset;
   cursor: pointer;
   transition: all 0.2s ease;
 

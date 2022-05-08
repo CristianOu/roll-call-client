@@ -1,12 +1,12 @@
 import React from 'react';
 import './CustomButton.scss';
 
-function CustomButton({ title, variant }) {
+function CustomButton({ title, variant, action }) {
   return (
-    <div className={`btn btn-wrapper-small ${variant}`}>
+    <button className={`btn btn-wrapper-small ${variant}`} onClick={action}>
       {/*  2 variants so far: info and action */}
       <span className="btn-text">{title}</span>
-    </div>
+    </button>
   );
 }
 
