@@ -1,9 +1,6 @@
 import '../../App.css';
-// import {useEffect, useState} from "react";
 
-function MetricContainer({title, percentage, diff}) {
-
-    // const [iconName, setIconName] = useState('arrowUp');
+function MetricContainer({title, percentage}) {
 
     const styles = {
         outerContainer: {
@@ -33,10 +30,6 @@ function MetricContainer({title, percentage, diff}) {
             borderColor: '#44C13C'
         },
     };
-
-    // useEffect(() => {
-    //     diff >= 0 ? setIconName('arrowUp') : setIconName('arrowDown');
-    // }, [diff]);
 
     return (
         <div style={styles.outerContainer}>

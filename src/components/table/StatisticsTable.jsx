@@ -52,7 +52,7 @@ function DefaultColumnFilter({column: {filterValue, preFilteredRows, setFilter}}
 // Let the table remove the filter if the string is empty
 fuzzyTextFilterFn.autoRemove = val => !val
 
-function MyTable({columns, data}) {
+function StatisticsTable({columns, data}) {
 
     const filterTypes = React.useMemo(
         () => ({
@@ -139,7 +139,7 @@ function MyTable({columns, data}) {
                     </tr>
                     </thead>
                     <tbody {...getTableBodyProps()}>
-                    {rows.map((row, i) => {
+                    {rows.map((row) => {
                         prepareRow(row)
                         return (
                             <tr {...row.getRowProps()}>
@@ -161,5 +161,4 @@ function MyTable({columns, data}) {
     return render();
 }
 
-
-export default MyTable;
+export default StatisticsTable;

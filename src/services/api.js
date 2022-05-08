@@ -12,3 +12,7 @@ export const getTeacherStatistics = (userId, classId, courseId) => {
 export const getTeacherCourses = (teacherId) => {
     return http.get(`/api/users/statisticCourse/${teacherId}`);
 }
+
+export const getStudentStatistics = (studentId) => {
+    return http.get(`/api/users/students/attendance/${studentId}`)
+}

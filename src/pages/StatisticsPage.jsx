@@ -1,11 +1,11 @@
 import '../App.css';
 import MetricContainer from "../components/metric-container/MetricContainer";
 import styled from "styled-components";
-import MyTable from "../components/table/MyTable";
+import StatisticsTable from "../components/table/StatisticsTable";
 import React, {useEffect, useMemo, useState} from "react";
 import Dropdown from "../components/dropdown/Dropdown";
-import {getTeacherCourses, getTeacherStatistics} from '../services/api';
-import {mapResponseToOptions, mapResponseToTableData} from "../services/helperFunctions";
+import {getStudentStatistics, getTeacherCourses, getTeacherStatistics} from '../services/api';
+import {mapResponseToOptions, mapResponseToTableData, mapStudentStatsToTableData} from "../services/helperFunctions";
 
 const Styles = styled.div`
   table {
@@ -106,55 +106,55 @@ function filterGreaterThan(rows, id, filterValue) {
 // check, but here, we want to remove the filter if it's not a number
 filterGreaterThan.autoRemove = val => typeof val !== 'number'
 
-const teacherColumns = [
-    {
-        Header: 'First Name',
-        accessor: 'firstName',
-    },
-    {
-        Header: 'Last Name',
-        accessor: 'lastName',
-        // Use our custom `fuzzyText` filter on this column
-        filter: 'fuzzyText',
-    },
-    {
-        Header: 'Email',
-        accessor: 'email',
-        // Use our custom `fuzzyText` filter on this column
-        filter: 'fuzzyText',
-    },
-    {
-        Header: 'Attendance (%)',
-        accessor: 'attendance',
-        Filter: NumberRangeColumnFilter,
-        filter: 'between',
-    },
-    {
-        Header: 'Actions',
-    }
-];
-
-const studentColumns = [
-    {
-        Header: 'Course',
-        accessor: 'course',
-    },
-    {
-        Header: 'Attendance',
-        accessor: 'attendance',
-        Filter: NumberRangeColumnFilter,
-        filter: 'between',
-    }];
+const tableColumns = {
+    teacher: [
+        {
+            Header: 'First Name',
+            accessor: 'firstName',
+        },
+        {
+            Header: 'Last Name',
+            accessor: 'lastName',
+            // Use our custom `fuzzyText` filter on this column
+            filter: 'fuzzyText',
+        },
+        {
+            Header: 'Email',
+            accessor: 'email',
+            // Use our custom `fuzzyText` filter on this column
+            filter: 'fuzzyText',
+        },
+        {
+            Header: 'Attendance (%)',
+            accessor: 'attendance',
+            Filter: NumberRangeColumnFilter,
+            filter: 'between',
+        },
+        {
+            Header: 'Actions',
+        }],
+    student: [
+        {
+            Header: 'Course',
+            accessor: 'course',
+        },
+        {
+            Header: 'Attendance',
+            accessor: 'attendance',
+            Filter: NumberRangeColumnFilter,
+            filter: 'between',
+        }]
+}
 
 function StatisticsPage() {
     // TODO: get user role from app state
-    const isTeacher = true;
+    const isTeacher = false;
     // TODO: get userId from app state
-    const userId = 1;
-    const tableColumns = isTeacher ? teacherColumns : studentColumns;
+    const userId = 27;
+    const tableColumns = isTeacher ? tableColumns.teacher : tableColumns.student;
     const [tableData, setTableData] = useState([]);
     const [selectedCourse, setSelectedCourse] = useState(undefined);
-    const [metrics, setMetrics] = useState({overall:0, week:0, month:0});
+    const [metrics, setMetrics] = useState({overall: 0, week: 0, month: 0});
     const [error, setError] = useState(undefined);
     const [loading, setLoading] = useState(true);
     const [courses, setCourses] = useState([]);
@@ -174,62 +174,42 @@ function StatisticsPage() {
                 setLoading(false);
                 setError('Something went wrong');
             })
+        } else {
+            getStudentStatistics(userId).then((response) => {
+                setTableData(mapStudentStatsToTableData(response.data));
+                setLoading(false);
+                setError(undefined);
+            }).catch(() => {
+                setLoading(false);
+                setError('Something went wrong')
+            })
         }
     }, []);
 
     useEffect(() => {
-        if (isTeacher && courses.length > 0) {
-            getTeacherStatistics(userId, selectedCourse.class_id, selectedCourse.course_id).then((response) => {
-                if (response.data.message !== 'Something went wrong') {
-                    setMetrics({
-                        overall: response.data['classAttendance'],
-                        week: response.data['weeklyAttendance'],
-                        month: response.data['monthlyAttendance']
-                    });
-                    setTableData(mapResponseToTableData(response.data['studentsAttendance']));
-                    setLoading(false);
-                    setError(undefined);
-                } else {
-                    setLoading(false);
-                    setError('Something went wrong');
-                }
-            }).catch(() => {
+        getTeacherStatistics(userId, selectedCourse.class_id, selectedCourse.course_id).then((response) => {
+            if (response.data.message !== 'Something went wrong') {
+                setMetrics({
+                    overall: response.data['classAttendance'],
+                    week: response.data['weeklyAttendance'],
+                    month: response.data['monthlyAttendance']
+                });
+                setTableData(mapResponseToTableData(response.data['studentsAttendance']));
+                setLoading(false);
+                setError(undefined);
+            } else {
                 setLoading(false);
                 setError('Something went wrong');
-            });
-        } else {
-            // TODO: Do it for the students...
-            // const metricsFromServer = {
-            //     overall: 60,
-            //     week: 30,
-            //     month: 80,
-            //     overallDiff: -10,
-            //     monthDiff: 40,
-            //     weekDiff: 90,
-            // };
-            // setMetrics(metricsFromServer);
-            // //TODO: if student, get courses and attendance from server
-            // const response = [
-            //     {
-            //         course: 'Development of Large Systems',
-            //         attendance: 50,
-            //     },
-            //     {
-            //         course: 'Testing',
-            //         attendance: 40,
-            //     },
-            //     {
-            //         course: 'Databases for Developers',
-            //         attendance: 90,
-            //     },
-            // ];
-            // setTableData(response);
-        }
-    }, [selectedCourse])
+            }
+        }).catch(() => {
+            setLoading(false);
+            setError('Something went wrong');
+        });
+    }, [selectedCourse]);
 
     const handleCourseChange = (option) => {
         setSelectedCourse(option.value);
-    }
+    };
 
     const render = () => {
         if (error) {
@@ -242,7 +222,8 @@ function StatisticsPage() {
 
         return (
             <div style={{marginLeft: '20px', marginRight: '20px'}}>
-                <Dropdown title={'Course'} handleChange={handleCourseChange} options={courses}/>
+                {isTeacher && <Dropdown title={'Course'} handleChange={handleCourseChange} options={courses}/>}
+                {isTeacher &&
                 <div style={{
                     display: 'flex',
                     flexDirection: 'row',
@@ -251,27 +232,20 @@ function StatisticsPage() {
                     marginTop: '30px',
                     marginBottom: '30px',
                 }}>
-                    <div style={{marginRight:20}}>
-                        <MetricContainer title={`Overall attendance`} percentage={metrics.overall}
-                                         diff={metrics.overallDiff}/>
+                    <div style={{marginRight: 20}}>
+                        <MetricContainer title={`Overall attendance`} percentage={metrics.overall}/>
                     </div>
-
-                    <div style={{marginRight:20}}>
-                        <MetricContainer title={`This week's attendance`} percentage={metrics.week}
-                                         diff={metrics.weekDiff}/>
+                    <div style={{marginRight: 20}}>
+                        <MetricContainer title={`This week's attendance`} percentage={metrics.week}/>
                     </div>
-
-                    <MetricContainer title={`This month's attendance`} percentage={metrics.month}
-                                     diff={metrics.monthDiff}/>
-                </div>
-                {isTeacher &&
+                    <MetricContainer title={`This month's attendance`} percentage={metrics.month}/>
+                </div>}
                 <Styles>
-                    <MyTable columns={tableColumns} data={tableData}/>
+                    <StatisticsTable columns={tableColumns} data={tableData}/>
                 </Styles>
-                }
             </div>
         );
-    }
+    };
 
     return render();
 }

@@ -18,3 +18,18 @@ export const mapResponseToTableData = (data) => {
     }
     return result;
 }
+
+export const mapStudentStatsToTableData = (data) => {
+    const result = [];
+    for (const property in data) {
+        console.log(property === 'firstName')
+        console.log(property === 'lastName')
+        if (data.hasOwnProperty(property) && property !== 'firstName' && property !== 'lastName') {
+            result.push({
+                course: property,
+                attendance: `${data[property]}`,
+            })
+        }
+    }
+    return result;
+}
