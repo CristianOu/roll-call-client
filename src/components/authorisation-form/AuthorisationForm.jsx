@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import http from "../../services/http.service";
+import { useNavigate } from 'react-router-dom';
 
-function AuthorisationForm() {
+function AuthorisationForm({setSession}) {
+  let navigate = useNavigate();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -9,13 +11,14 @@ function AuthorisationForm() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
     try {
       const response = await http.post('/api/users/login', {
         email: email,
         password: password
       });  
-      console.log(response);
+      // console.log('response', response.data.userId)
+      setSession(response.data);
+      navigate('/');
     } catch (error) {
       console.log(error);
     }

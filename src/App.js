@@ -10,35 +10,43 @@ import LogInPage from './pages/LogInPage';
 
 function App() {
 
-  const [data, setData] = useState(0);
+  const [session, setSession] = useState({});
 
   useEffect(() => {
-    http.get("/").then(res => {
-      setData(res.data);
-    })
+    async function fetchSession() {
+      try {
+        const response = await http.get('/getsession');
+        setSession(response.data)
+      } catch (error) {
+        console.log(error);
+      } 
+    }
+    fetchSession();
   }, []);
 
-  function isUserLoggedIn() {
-    return false; 
-  }
-
+  console.log('session', session);
   return (
     <div className='App'>
       {
-        isUserLoggedIn() ?
+        session.userId ?
           <SideBar className='side-bar-container' /> :
           ""
       }
         <Routes>
-          <Route path="/" element={<RollCall className='roll-call-page-container' />}/>
-          <Route path="/statistics" element={<StatisticsPage />} className='roll-call-page-container'/>
-          <Route path="/login" element={isUserLoggedIn() ? (<Navigate to="/" />) : (<LogInPage className={'login-container'} />)}/>
+          <Route path="/" element={ session.userId ? (<RollCall className='roll-call-page-container' />) : (<LogInPage className={'login-container'} setSession={setSession}/>)}/>
+          <Route path="/statistics" element={ session.userId ? (<StatisticsPage />) : (<LogInPage className={'login-container'} setSession={setSession}/>)} />
+          <Route path="/login" element={ session.userId ? (<Navigate to="/" />) : (<LogInPage className={'login-container'} setSession={setSession}/>)}/>
           <Route
             path="*"
             element={
-              <main style={{ padding: "1rem" }}>
-                <p>There's nothing here!</p>
-              </main>
+              session.userId ? (
+                <main style={{ padding: "1rem" }}>
+                  <p>There's nothing here for now!</p>
+                </main>
+              ) : (
+                <LogInPage className={'login-container'} setSession={setSession} />
+              )
+              
             }/>
         </Routes>
     </div>

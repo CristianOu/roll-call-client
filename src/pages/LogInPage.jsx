@@ -1,10 +1,10 @@
 import React from 'react';
 import AuthorisationForm from '../components/authorisation-form/AuthorisationForm';
 
-function LoginPage({className}) {
+function LoginPage({className, setSession}) {
   return (
     <div className={className}>
-      <AuthorisationForm />
+      <AuthorisationForm setSession={setSession}/>
     </div>
   );
 }
