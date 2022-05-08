@@ -2,7 +2,6 @@ import '../../App.css';
 import Select from 'react-select';
 
 function Dropdown({title, handleChange, options}) {
-    console.log('options', options)
     const customStyles = {
         control: (css) => ({
             ...css,

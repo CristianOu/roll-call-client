@@ -148,10 +148,9 @@ const tableColumns = {
 
 function StatisticsPage() {
     // TODO: get user role from app state
-    const isTeacher = false;
+    const isTeacher = true;
     // TODO: get userId from app state
-    const userId = 27;
-    const tableColumns = isTeacher ? tableColumns.teacher : tableColumns.student;
+    const userId = 1;
     const [tableData, setTableData] = useState([]);
     const [selectedCourse, setSelectedCourse] = useState(undefined);
     const [metrics, setMetrics] = useState({overall: 0, week: 0, month: 0});
@@ -184,28 +183,30 @@ function StatisticsPage() {
                 setError('Something went wrong')
             })
         }
-    }, []);
+    }, [isTeacher]);
 
     useEffect(() => {
-        getTeacherStatistics(userId, selectedCourse.class_id, selectedCourse.course_id).then((response) => {
-            if (response.data.message !== 'Something went wrong') {
-                setMetrics({
-                    overall: response.data['classAttendance'],
-                    week: response.data['weeklyAttendance'],
-                    month: response.data['monthlyAttendance']
-                });
-                setTableData(mapResponseToTableData(response.data['studentsAttendance']));
-                setLoading(false);
-                setError(undefined);
-            } else {
+        if (isTeacher && selectedCourse) {
+            getTeacherStatistics(userId, selectedCourse.class_id, selectedCourse.course_id).then((response) => {
+                if (response.data.message !== 'Something went wrong') {
+                    setMetrics({
+                        overall: response.data['classAttendance'],
+                        week: response.data['weeklyAttendance'],
+                        month: response.data['monthlyAttendance']
+                    });
+                    setTableData(mapResponseToTableData(response.data['studentsAttendance']));
+                    setLoading(false);
+                    setError(undefined);
+                } else {
+                    setLoading(false);
+                    setError('Something went wrong');
+                }
+            }).catch(() => {
                 setLoading(false);
                 setError('Something went wrong');
-            }
-        }).catch(() => {
-            setLoading(false);
-            setError('Something went wrong');
-        });
-    }, [selectedCourse]);
+            });
+        }
+    }, [selectedCourse, isTeacher]);
 
     const handleCourseChange = (option) => {
         setSelectedCourse(option.value);
@@ -241,7 +242,7 @@ function StatisticsPage() {
                     <MetricContainer title={`This month's attendance`} percentage={metrics.month}/>
                 </div>}
                 <Styles>
-                    <StatisticsTable columns={tableColumns} data={tableData}/>
+                    <StatisticsTable columns={isTeacher ? tableColumns.teacher : tableColumns.student} data={tableData}/>
                 </Styles>
             </div>
         );
