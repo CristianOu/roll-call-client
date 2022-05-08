@@ -1,9 +1,11 @@
 import '../App.css';
 import MetricContainer from "../components/metric-container/MetricContainer";
 import styled from "styled-components";
-import MyTable from "../components/table/MyTable";
+import StatisticsTable from "../components/table/StatisticsTable";
 import React, {useEffect, useMemo, useState} from "react";
 import Dropdown from "../components/dropdown/Dropdown";
+import {getStudentStatistics, getTeacherCourses, getTeacherStatistics} from '../services/api';
+import {mapResponseToOptions, mapResponseToTableData, mapStudentStatsToTableData} from "../services/helperFunctions";
 
 const Styles = styled.div`
   table {
@@ -104,530 +106,149 @@ function filterGreaterThan(rows, id, filterValue) {
 // check, but here, we want to remove the filter if it's not a number
 filterGreaterThan.autoRemove = val => typeof val !== 'number'
 
-const teacherColumns = [
-    {
-        Header: 'First Name',
-        accessor: 'firstName',
-    },
-    {
-        Header: 'Last Name',
-        accessor: 'lastName',
-        // Use our custom `fuzzyText` filter on this column
-        filter: 'fuzzyText',
-    },
-    {
-        Header: 'Email',
-        accessor: 'email',
-        // Use our custom `fuzzyText` filter on this column
-        filter: 'fuzzyText',
-    },
-    {
-        Header: 'Attendance (%)',
-        accessor: 'attendance',
-        Filter: NumberRangeColumnFilter,
-        filter: 'between',
-    },
-    {
-        Header: 'Actions',
-    }
-];
-
-const studentColumns = [
-    {
-        Header: 'Course',
-        accessor: 'course',
-    },
-    {
-        Header: 'Attendance',
-        accessor: 'attendance',
-        Filter: NumberRangeColumnFilter,
-        filter: 'between',
-    }];
+const tableColumns = {
+    teacher: [
+        {
+            Header: 'First Name',
+            accessor: 'firstName',
+        },
+        {
+            Header: 'Last Name',
+            accessor: 'lastName',
+            // Use our custom `fuzzyText` filter on this column
+            filter: 'fuzzyText',
+        },
+        {
+            Header: 'Email',
+            accessor: 'email',
+            // Use our custom `fuzzyText` filter on this column
+            filter: 'fuzzyText',
+        },
+        {
+            Header: 'Attendance (%)',
+            accessor: 'attendance',
+            Filter: NumberRangeColumnFilter,
+            filter: 'between',
+        },
+        {
+            Header: 'Actions',
+        }],
+    student: [
+        {
+            Header: 'Course',
+            accessor: 'course',
+        },
+        {
+            Header: 'Attendance',
+            accessor: 'attendance',
+            Filter: NumberRangeColumnFilter,
+            filter: 'between',
+        }]
+}
 
 function StatisticsPage() {
-    //TODO: get user role from app state
-    const userRole = 'teacher';
-
-    const [tableColumns, setTableColumns] = useState([]);
+    // TODO: get user role from app state
+    const isTeacher = true;
+    // TODO: get userId from app state
+    const userId = 1;
     const [tableData, setTableData] = useState([]);
-    const [selectedCourse, setSelectedCourse] = useState('');
-    const [metrics, setMetrics] = useState({
-        overall: 0,
-        week: 0,
-        month: 0,
-        overallDiff: 0,
-        monthDiff: 0,
-        weekDiff: 0,
-    });
+    const [selectedCourse, setSelectedCourse] = useState(undefined);
+    const [metrics, setMetrics] = useState({overall: 0, week: 0, month: 0});
+    const [error, setError] = useState(undefined);
+    const [loading, setLoading] = useState(true);
+    const [courses, setCourses] = useState([]);
 
     useEffect(() => {
-        if (userRole === 'teacher') {
-            setTableColumns(teacherColumns);
-            //TODO: get data from server
-            const metricsFromServer = {
-                overall: 60,
-                week: 30,
-                month: 80,
-                overallDiff: -10,
-                monthDiff: 40,
-                weekDiff: 90,
-            };
-            setMetrics(metricsFromServer);
-            const data = [
-                {
-                    firstName: 'John',
-                    lastName: 'Smith',
-                    email: 'j.smith@stud.kea.dk',
-                    attendance: 59,
-                },
-                {
-                    firstName: 'George',
-                    lastName: 'Peterson',
-                    email: 'g.peterson@stud.kea.dk',
-                    attendance: 5,
+        if (isTeacher) {
+            getTeacherCourses(userId).then((response) => {
+                if (response.data.message !== 'Something went wrong') {
+                    setCourses(mapResponseToOptions(response.data));
+                    setLoading(false);
+                    setError(undefined);
+                } else {
+                    setLoading(false);
+                    setError('Something went wrong');
                 }
-            ];
-            setTableData(data);
+            }).catch(() => {
+                setLoading(false);
+                setError('Something went wrong');
+            })
         } else {
-            const metricsFromServer = {
-                overall: 60,
-                week: 30,
-                month: 80,
-                overallDiff: -10,
-                monthDiff: 40,
-                weekDiff: 90,
-            };
-            setMetrics(metricsFromServer);
-            setTableColumns(studentColumns);
-            //TODO: if student, get courses and attendance from server
-            const response = [
-                {
-                    course: 'Development of Large Systems',
-                    attendance: 50,
-                },
-                {
-                    course: 'Testing',
-                    attendance: 40,
-                },
-                {
-                    course: 'Databases for Developers',
-                    attendance: 90,
-                },
-                {
-                    course: 'Development of Large Systems',
-                    attendance: 50,
-                },
-                {
-                    course: 'Testing',
-                    attendance: 40,
-                },
-                {
-                    course: 'Databases for Developers',
-                    attendance: 90,
-                },
-                {
-                    course: 'Development of Large Systems',
-                    attendance: 50,
-                },
-                {
-                    course: 'Testing',
-                    attendance: 40,
-                },
-                {
-                    course: 'Databases for Developers',
-                    attendance: 90,
-                },
-                {
-                    course: 'Development of Large Systems',
-                    attendance: 50,
-                },
-                {
-                    course: 'Testing',
-                    attendance: 40,
-                },
-                {
-                    course: 'Databases for Developers',
-                    attendance: 90,
-                },
-                {
-                    course: 'Development of Large Systems',
-                    attendance: 50,
-                },
-                {
-                    course: 'Testing',
-                    attendance: 40,
-                },
-                {
-                    course: 'Databases for Developers',
-                    attendance: 90,
-                },
-                {
-                    course: 'Development of Large Systems',
-                    attendance: 50,
-                },
-                {
-                    course: 'Testing',
-                    attendance: 40,
-                },
-                {
-                    course: 'Databases for Developers',
-                    attendance: 90,
-                },
-                {
-                    course: 'Development of Large Systems',
-                    attendance: 50,
-                },
-                {
-                    course: 'Testing',
-                    attendance: 40,
-                },
-                {
-                    course: 'Databases for Developers',
-                    attendance: 90,
-                },
-                {
-                    course: 'Development of Large Systems',
-                    attendance: 50,
-                },
-                {
-                    course: 'Testing',
-                    attendance: 40,
-                },
-                {
-                    course: 'Databases for Developers',
-                    attendance: 90,
-                },
-                {
-                    course: 'Development of Large Systems',
-                    attendance: 50,
-                },
-                {
-                    course: 'Testing',
-                    attendance: 40,
-                },
-                {
-                    course: 'Databases for Developers',
-                    attendance: 90,
-                },
-                {
-                    course: 'Development of Large Systems',
-                    attendance: 50,
-                },
-                {
-                    course: 'Testing',
-                    attendance: 40,
-                },
-                {
-                    course: 'Databases for Developers',
-                    attendance: 90,
-                },
-                {
-                    course: 'Development of Large Systems',
-                    attendance: 50,
-                },
-                {
-                    course: 'Testing',
-                    attendance: 40,
-                },
-                {
-                    course: 'Databases for Developers',
-                    attendance: 90,
-                },
-                {
-                    course: 'Development of Large Systems',
-                    attendance: 50,
-                },
-                {
-                    course: 'Testing',
-                    attendance: 40,
-                },
-                {
-                    course: 'Databases for Developers',
-                    attendance: 90,
-                },
-                {
-                    course: 'Development of Large Systems',
-                    attendance: 50,
-                },
-                {
-                    course: 'Testing',
-                    attendance: 40,
-                },
-                {
-                    course: 'Databases for Developers',
-                    attendance: 90,
-                },
-                {
-                    course: 'Development of Large Systems',
-                    attendance: 50,
-                },
-                {
-                    course: 'Testing',
-                    attendance: 40,
-                },
-                {
-                    course: 'Databases for Developers',
-                    attendance: 90,
-                },
-                {
-                    course: 'Development of Large Systems',
-                    attendance: 50,
-                },
-                {
-                    course: 'Testing',
-                    attendance: 40,
-                },
-                {
-                    course: 'Databases for Developers',
-                    attendance: 90,
-                },
-                {
-                    course: 'Development of Large Systems',
-                    attendance: 50,
-                },
-                {
-                    course: 'Testing',
-                    attendance: 40,
-                },
-                {
-                    course: 'Databases for Developers',
-                    attendance: 90,
-                },
-                {
-                    course: 'Development of Large Systems',
-                    attendance: 50,
-                },
-                {
-                    course: 'Testing',
-                    attendance: 40,
-                },
-                {
-                    course: 'Databases for Developers',
-                    attendance: 90,
-                },
-                {
-                    course: 'Development of Large Systems',
-                    attendance: 50,
-                },
-                {
-                    course: 'Testing',
-                    attendance: 40,
-                },
-                {
-                    course: 'Databases for Developers',
-                    attendance: 90,
-                },
-                {
-                    course: 'Development of Large Systems',
-                    attendance: 50,
-                },
-                {
-                    course: 'Testing',
-                    attendance: 40,
-                },
-                {
-                    course: 'Databases for Developers',
-                    attendance: 90,
-                },
-                {
-                    course: 'Development of Large Systems',
-                    attendance: 50,
-                },
-                {
-                    course: 'Testing',
-                    attendance: 40,
-                },
-                {
-                    course: 'Databases for Developers',
-                    attendance: 90,
-                },
-                {
-                    course: 'Development of Large Systems',
-                    attendance: 50,
-                },
-                {
-                    course: 'Testing',
-                    attendance: 40,
-                },
-                {
-                    course: 'Databases for Developers',
-                    attendance: 90,
-                },
-                {
-                    course: 'Development of Large Systems',
-                    attendance: 50,
-                },
-                {
-                    course: 'Testing',
-                    attendance: 40,
-                },
-                {
-                    course: 'Databases for Developers',
-                    attendance: 90,
-                },
-                {
-                    course: 'Development of Large Systems',
-                    attendance: 50,
-                },
-                {
-                    course: 'Testing',
-                    attendance: 40,
-                },
-                {
-                    course: 'Databases for Developers',
-                    attendance: 90,
-                },
-                {
-                    course: 'Development of Large Systems',
-                    attendance: 50,
-                },
-                {
-                    course: 'Testing',
-                    attendance: 40,
-                },
-                {
-                    course: 'Databases for Developers',
-                    attendance: 90,
-                },
-                {
-                    course: 'Development of Large Systems',
-                    attendance: 50,
-                },
-                {
-                    course: 'Testing',
-                    attendance: 40,
-                },
-                {
-                    course: 'Databases for Developers',
-                    attendance: 90,
-                },
-                {
-                    course: 'Development of Large Systems',
-                    attendance: 50,
-                },
-                {
-                    course: 'Testing',
-                    attendance: 40,
-                },
-                {
-                    course: 'Databases for Developers',
-                    attendance: 90,
-                },
-                {
-                    course: 'Development of Large Systems',
-                    attendance: 50,
-                },
-                {
-                    course: 'Testing',
-                    attendance: 40,
-                },
-                {
-                    course: 'Databases for Developers',
-                    attendance: 90,
-                },
-                {
-                    course: 'Development of Large Systems',
-                    attendance: 50,
-                },
-                {
-                    course: 'Testing',
-                    attendance: 40,
-                },
-                {
-                    course: 'Databases for Developers',
-                    attendance: 90,
-                },
-                {
-                    course: 'Development of Large Systems',
-                    attendance: 50,
-                },
-                {
-                    course: 'Testing',
-                    attendance: 40,
-                },
-                {
-                    course: 'Databases for Developers',
-                    attendance: 90,
-                },
-                {
-                    course: 'Development of Large Systems',
-                    attendance: 50,
-                },
-                {
-                    course: 'Testing',
-                    attendance: 40,
-                },
-                {
-                    course: 'Databases for Developers',
-                    attendance: 90,
-                },
-                {
-                    course: 'Development of Large Systems',
-                    attendance: 50,
-                },
-                {
-                    course: 'Testing',
-                    attendance: 40,
-                },
-                {
-                    course: 'Databases for Developers',
-                    attendance: 90,
-                },
-                {
-                    course: 'Development of Large Systems',
-                    attendance: 50,
-                },
-                {
-                    course: 'Testing',
-                    attendance: 40,
-                },
-                {
-                    course: 'Databases for Developers',
-                    attendance: 90,
-                },
-                {
-                    course: 'Development of Large Systems',
-                    attendance: 50,
-                },
-                {
-                    course: 'Testing',
-                    attendance: 40,
-                },
-                {
-                    course: 'Databases for Developers',
-                    attendance: 90,
-                },
-            ];
-            setTableData(response);
+            getStudentStatistics(userId).then((response) => {
+                setTableData(mapStudentStatsToTableData(response.data));
+                setLoading(false);
+                setError(undefined);
+            }).catch(() => {
+                setLoading(false);
+                setError('Something went wrong')
+            })
         }
-    }, [selectedCourse])
+    }, [isTeacher]);
+
+    useEffect(() => {
+        if (isTeacher && selectedCourse) {
+            getTeacherStatistics(userId, selectedCourse.class_id, selectedCourse.course_id).then((response) => {
+                if (response.data.message !== 'Something went wrong') {
+                    setMetrics({
+                        overall: response.data['classAttendance'],
+                        week: response.data['weeklyAttendance'],
+                        month: response.data['monthlyAttendance']
+                    });
+                    setTableData(mapResponseToTableData(response.data['studentsAttendance']));
+                    setLoading(false);
+                    setError(undefined);
+                } else {
+                    setLoading(false);
+                    setError('Something went wrong');
+                }
+            }).catch(() => {
+                setLoading(false);
+                setError('Something went wrong');
+            });
+        }
+    }, [selectedCourse, isTeacher]);
 
     const handleCourseChange = (option) => {
-        setSelectedCourse(option.label);
-    }
+        setSelectedCourse(option.value);
+    };
 
-    return (
-        <div style={{marginLeft: '20px', marginRight: '20px'}}>
-            <Dropdown title={'Course'} handleChange={handleCourseChange}/>
-            <div style={{
-                display: 'flex',
-                flexDirection: 'row',
-                flexWrap: 'wrap',
-                justifyContent: 'space-between',
-                marginTop: '30px',
-                marginBottom: '30px'
-            }}>
-                <MetricContainer title={`Overall attendance`} percentage={metrics.overall} diff={metrics.overallDiff}/>
-                <MetricContainer title={`This week's attendance`} percentage={metrics.week} diff={metrics.weekDiff}/>
-                <MetricContainer title={`This month's attendance`} percentage={metrics.month} diff={metrics.monthDiff}/>
+    const render = () => {
+        if (error) {
+            return <text>{error}</text>
+        }
+
+        if (loading) {
+            return <text>Loading...</text>
+        }
+
+        return (
+            <div style={{marginLeft: '20px', marginRight: '20px', marginTop:'10px'}}>
+                {isTeacher && <Dropdown title={'Course'} handleChange={handleCourseChange} options={courses}/>}
+                {isTeacher &&
+                <div style={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    flexWrap: 'wrap',
+                    justifyContent: 'flex-start',
+                    marginTop: '30px',
+                    marginBottom: '30px',
+                }}>
+                    <div style={{marginRight: 20}}>
+                        <MetricContainer title={`Overall attendance`} percentage={metrics.overall}/>
+                    </div>
+                    <div style={{marginRight: 20}}>
+                        <MetricContainer title={`This week's attendance`} percentage={metrics.week}/>
+                    </div>
+                    <MetricContainer title={`This month's attendance`} percentage={metrics.month}/>
+                </div>}
+                <Styles>
+                    <StatisticsTable columns={isTeacher ? tableColumns.teacher : tableColumns.student} data={tableData}/>
+                </Styles>
             </div>
-            {userRole === 'teacher' &&
-            <Styles>
-                <MyTable columns={tableColumns} data={tableData}/>
-            </Styles>
-            }
-        </div>
-    );
+        );
+    };
+
+    return render();
 }
 
 export default StatisticsPage;
