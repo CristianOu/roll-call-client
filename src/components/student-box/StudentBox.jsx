@@ -4,7 +4,7 @@ import React from 'react';
 import ProfilePicture from '../../assets/images/profile-pic-example.png';
 import CustomButton from '../custom-button/CustomButton';
 
-function StudentBox() {
+function StudentBox({ student }) {
   return (
     <div className="student-box">
       <div className="profile-picture">
@@ -12,8 +12,10 @@ function StudentBox() {
       </div>
 
       <div className="info-section">
-        <span className="name">Robert Whistable</span>
-        <span className="email">robert_whistable@stud.kea.dk</span>
+        <span className="name">
+          {student.firstName} {student.lastName}
+        </span>
+        <span className="email">{student.email}</span>
       </div>
 
       <CustomButton title="View Profile" variant="info" />

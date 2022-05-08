@@ -21,7 +21,7 @@ const generateCode = (teacherId) => {
 const joinClass = (code, student) => {
   code = document.getElementById('code').value;
   student = {
-    studentId: 10,
+    studentId: 11,
     firstName: 'Ondrej',
     lastName: 'Surname',
     age: 15,
@@ -34,10 +34,13 @@ const joinClass = (code, student) => {
 
 function App() {
   const [data, setData] = useState(0);
+  const [students, setStudents] = useState([]);
+  const [code, setCode] = useState('');
 
   useEffect(() => {
     socket.on('codeGenerated', (data) => {
       console.log('code generated ', data);
+      setCode(data.code);
       setTimeout(() => {
         //console.log('Timed out');
         socket.emit('deleteCode', {
@@ -57,6 +60,7 @@ function App() {
 
     socket.on('studentJoined', (data) => {
       console.log('student joined', data);
+      setStudents([...students, data]);
     });
   }, []);
 
@@ -66,7 +70,7 @@ function App() {
     });
   }, []);
 
-  console.log(data);
+  console.log(students);
 
   return (
     <div className="App">
@@ -79,7 +83,9 @@ function App() {
               <RollCall
                 generateCode={generateCode}
                 joinClass={joinClass}
+                students={students}
                 className="roll-call-page-container"
+                code={code}
               />
             }
           />

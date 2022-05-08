@@ -3,14 +3,16 @@ import TopBar from '../components/top-bar/TopBar';
 import UtilityBar from '../components/utility-bar/UtilityBar';
 import StudentBox from '../components/student-box/StudentBox';
 
-function RollCall({ className, generateCode, joinClass }) {
+function RollCall({ className, generateCode, joinClass, students, code }) {
   return (
     <div className={className}>
-      <TopBar generateCode={generateCode} joinClass={joinClass} />
+      <TopBar generateCode={generateCode} joinClass={joinClass} code={code} />
 
       <UtilityBar />
 
-      <StudentBox />
+      {students.map((student) => (
+        <StudentBox key={student.studentId} student={student} />
+      ))}
     </div>
   );
 }
