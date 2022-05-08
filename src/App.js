@@ -4,7 +4,7 @@ import http from "./services/http.service";
 import StatisticsPage from "./pages/StatisticsPage";
 import SideBar from './components/side-bar/SideBar';
 import "@fontsource/plus-jakarta-sans"; // Defaults to weight 400.
-import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import RollCall from './pages/RollCall';
 
 function App() {
@@ -17,17 +17,13 @@ function App() {
     })
   }, []);
 
-  console.log(data);
-
   return (
     <div className='App'>
-      <SideBar className='side-bar-container'/>
-      <Router>
+        <SideBar className='side-bar-container'/>
         <Routes>
           <Route path="/" element={<RollCall className='roll-call-page-container' />}/>
           <Route path="/statistics" element={<StatisticsPage />} className='roll-call-page-container'/>
         </Routes>
-      </Router>
     </div>
   );
 }

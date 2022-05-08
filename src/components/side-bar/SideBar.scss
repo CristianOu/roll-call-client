@@ -27,7 +27,6 @@
 
       &:hover {
         background-color: #242D35;
-        border-right: 4px solid #6E6EF7;
         transition: background-color .1s;
       }
 
@@ -35,9 +34,25 @@
         background-color: #20282f;
       }
 
-      .icon {
+      svg {
         margin-right: 1vw;
       }
+
+      span {
+        color: main.$side-bar-text-color;
+      }
+    }
+
+    .active {
+      .option-container  {
+        border-right: 4px solid #6E6EF7;
+        background-color: main.$primary-dark-color;
+        color: main.$search-bar-focus-border-color;
+      }
+    }
+
+    .option-color path {
+      fill: currentColor;
     }
   }
 
