@@ -1,7 +1,7 @@
 @use "../../sass/main.scss" as main;
 
 .btn {
-  background-color: main.$btn-primary-color;
+  all: unset;
   cursor: pointer;
   transition: all 0.2s ease;
 
@@ -19,13 +19,42 @@
     }
   }
 
-  &:hover {
-    opacity: 0.75;
-    transition: all 0.2s ease;
+  &.info {
+    border: 1px solid main.$search-bar-border-color;
+
+    .btn-text {
+      color: main.$primary-dark-color;
+      font-weight: bold;
+      user-select: none;
+      transition: all 0.2s ease;
+    }
+
+    &:hover {
+      border: 1px solid main.$search-bar-focus-border-color;
+      transition: all 0.2s ease;
+    }
+
+    &:active {
+      background-color: main.$btn-primary-color;
+
+      .btn-text {
+        color: white;
+        transition: all 0.2s ease;
+      }
+    }
   }
 
-  &:active {
-    background-color: main.$btn-primary-active-color;
+  &.action {
+    background-color: main.$btn-primary-color;
+
+    &:hover {
+      opacity: 0.75;
+      transition: all 0.2s ease;
+    }
+
+    &:active {
+      background-color: main.$btn-primary-active-color;
+    }
   }
 }
 

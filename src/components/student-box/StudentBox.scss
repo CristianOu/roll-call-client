@@ -1,0 +1,53 @@
+@use "../../sass/main.scss" as main;
+
+.student-box {
+  margin-top: 10px;
+  margin-left: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  background-color: main.$component-box-color;
+  width: 220px;
+  height: 270px;
+  border-radius: 10px;
+  border: 1px solid main.$search-bar-border-color;
+  overflow: hidden;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  transition: all 0.4s ease;
+  cursor: pointer;
+  animation: bounceIn cubic-bezier(0.5,0.8,0.5,1) .5s;
+
+  @keyframes bounceIn {
+    0% {transform:scale(0);}
+    60% {transform:scale(1.1);}
+    90% {transform:scale(0.9);}
+    100% {transform:scale(1);}
+  }
+
+  &:hover {
+    transform: scale(1.05);
+    transition: all 0.25s ease;
+  }
+
+  .info-section {
+    display: flex;
+    flex-direction: column;
+
+    .name {
+      padding: 10px;
+      color: main.$primary-dark-color;
+    }
+
+    .email {
+      color: main.$secondary-dark-color;
+      font-size: main.$fs0;
+    }
+  }
+
+  .profile-picture {
+    pointer-events: none;
+    display: flex;
+    justify-content: center;
+  }
+}

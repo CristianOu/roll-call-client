@@ -35,7 +35,9 @@ function SideBar({className}) {
 
   return (
     <div className={className}>
-      <div className="logo">Workit {/* will be replaced */}</div>
+      <div className="logo">
+        RollCall<span className="symbol">.</span> {/* will be replaced */}
+      </div>
 
       <div className="options-container">
         <div className="options-wrapper top-option">
