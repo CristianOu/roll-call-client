@@ -1,7 +1,8 @@
-import './App.css';
+import '../../App.css';
 import Select from 'react-select';
 
-function DropDown({title, handleChange, options}) {
+function Dropdown({title, handleChange, options}) {
+    console.log('options', options)
     const customStyles = {
         control: (css) => ({
             ...css,
@@ -40,4 +41,4 @@ function DropDown({title, handleChange, options}) {
     );
 }
 
-export default DropDown;
+export default Dropdown;

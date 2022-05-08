@@ -1,4 +1,4 @@
-import './App.css';
+import '../../App.css';
 // import {useEffect, useState} from "react";
 
 function MetricContainer({title, percentage, diff}) {
@@ -10,7 +10,7 @@ function MetricContainer({title, percentage, diff}) {
             display: 'flex',
             flexDirection: 'row',
             height: 120,
-            width: 300,
+            width: 280,
             justifyContent: "space-between",
             boxShadow: 'rgba(149, 157, 165, 0.2) 0px 8px 24px',
             alignItems: 'center',
@@ -21,7 +21,7 @@ function MetricContainer({title, percentage, diff}) {
             paddingLeft: 10,
         },
         percentageTitle: {
-            fontSize: 20,
+            fontSize: 16,
         },
         fillBarStyle: {
             position: 'absolute',

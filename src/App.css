@@ -1,66 +1,62 @@
 .App {
-    text-align: center;
-    font-size: 40px;
-}
-
-.top-bar {
-    width: 100%;
+  text-align: center;
+  /*font-size: 40px;*/
 }
 
 .drop-down {
-    display: flex;
-    align-content: center;
-    align-items: center;
+  display: flex;
+  align-content: center;
+  align-items: center;
 }
 
 .c100 {
-    position: relative;
-    width: 1em;
-    height: 1em;
-    border-radius: 50%;
-    float: left;
-    margin: 0 0.1em 0.1em 0;
-    box-sizing: content-box;
-    font-size: 80px;
+  position: relative;
+  width: 1em;
+  height: 1em;
+  border-radius: 50%;
+  float: left;
+  margin: 0 0.1em 0.1em 0;
+  box-sizing: content-box;
+  font-size: 80px;
 }
 
 .c100 > span {
-    pointer-events: none;
-    position: absolute;
-    z-index: 1;
-    left: 0;
-    top: 0;
-    width: 5em;
-    line-height: 5em;
-    font-size: 0.2em;
-    color: #cccccc;
-    display: block;
-    text-align: center;
-    white-space: nowrap;
-    transition-property: all;
-    transition-duration: 0.2s;
-    transition-timing-function: ease-out;
+  pointer-events: none;
+  position: absolute;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 5em;
+  line-height: 5em;
+  font-size: 0.2em;
+  color: #cccccc;
+  display: block;
+  text-align: center;
+  white-space: nowrap;
+  transition-property: all;
+  transition-duration: 0.2s;
+  transition-timing-function: ease-out;
 }
 
 .c100:after {
-    pointer-events: none;
-    position: absolute;
-    top: 0.08em;
-    left: 0.08em;
-    display: block;
-    content: ' ';
-    border-radius: 50%;
-    background-color: white;
-    width: 0.84em;
-    height: 0.84em;
-    transition-property: all;
-    transition-duration: 0.2s;
-    transition-timing-function: ease-in;
+  pointer-events: none;
+  position: absolute;
+  top: 0.08em;
+  left: 0.08em;
+  display: block;
+  content: ' ';
+  border-radius: 50%;
+  background-color: white;
+  width: 0.84em;
+  height: 0.84em;
+  transition-property: all;
+  transition-duration: 0.2s;
+  transition-timing-function: ease-in;
 }
 
 .c100 .slice {
-    position: absolute;
-    width: 1em;
-    height: 1em;
-    clip: rect(0em, 1em, 1em, 0.5em);
+  position: absolute;
+  width: 1em;
+  height: 1em;
+  clip: rect(0em, 1em, 1em, 0.5em);
 }

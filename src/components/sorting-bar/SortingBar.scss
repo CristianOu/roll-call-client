@@ -1,0 +1,36 @@
+@use "../../sass/main.scss" as main;
+
+.sorting-bar {
+  display: flex;
+  background-color: main.$component-box-color;
+  width: 160px;
+  height: 40px;
+  border-radius: 30px;
+  border: 1px solid main.$search-bar-border-color;
+  overflow: hidden;
+  position: relative;
+  cursor: pointer;
+
+  &:hover {
+    border: 1px solid main.$search-bar-focus-border-color;
+    transition: all 0.2s ease;
+  }
+
+  span {
+    padding: 10px;
+    color: main.$primary-dark-color;
+  }
+
+  .sort-icon {
+    width: 25px;
+    cursor: pointer;
+    pointer-events: none;
+    position: absolute;
+    right: 5px;
+    top: 0;
+    bottom: 0;
+    margin-top: auto;
+    margin-bottom: auto;
+    z-index: 0;
+  }
+}

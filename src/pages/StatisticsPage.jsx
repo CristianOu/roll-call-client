@@ -1,11 +1,11 @@
-import './App.css';
-import MetricContainer from "./MetricContainer";
+import '../App.css';
+import MetricContainer from "../components/metric-container/MetricContainer";
 import styled from "styled-components";
-import MyTable from "./MyTable";
+import MyTable from "../components/table/MyTable";
 import React, {useEffect, useMemo, useState} from "react";
-import DropDown from "./DropDown";
-import {getTeacherCourses, getTeacherStatistics} from "./services/api";
-import {mapResponseToOptions, mapResponseToTableData} from "./services/helperFunctions";
+import Dropdown from "../components/dropdown/Dropdown";
+import {getTeacherCourses, getTeacherStatistics} from '../services/api';
+import {mapResponseToOptions, mapResponseToTableData} from "../services/helperFunctions";
 
 const Styles = styled.div`
   table {
@@ -242,14 +242,14 @@ function StatisticsPage() {
 
         return (
             <div style={{marginLeft: '20px', marginRight: '20px'}}>
-                <DropDown title={'Course'} handleChange={handleCourseChange} options={courses}/>
+                <Dropdown title={'Course'} handleChange={handleCourseChange} options={courses}/>
                 <div style={{
                     display: 'flex',
                     flexDirection: 'row',
                     flexWrap: 'wrap',
                     justifyContent: 'space-between',
                     marginTop: '30px',
-                    marginBottom: '30px'
+                    marginBottom: '30px',
                 }}>
                     <MetricContainer title={`Overall attendance`} percentage={metrics.overall}
                                      diff={metrics.overallDiff}/>
