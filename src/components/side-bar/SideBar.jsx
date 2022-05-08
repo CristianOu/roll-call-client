@@ -1,28 +1,35 @@
 import React from 'react';
+import {NavLink} from "react-router-dom";
 import './SideBar.scss';
-import StatisticsIcon from '../../assets/images/statistics-icon.svg';
-import RollCallIcon from '../../assets/images/roll-call-icon.svg';
-import SettingsIcon from '../../assets/images/settings-icon.svg';
-import HelpCenterIcon from '../../assets/images/help-center-icon.svg';
+import SvgStatistics from '../../assets/images/iconComponents/Statistics';
+import SvgRallCall from '../../assets/images/iconComponents/RollCall';
+import SvgSettings from '../../assets/images/iconComponents/Settings';
+import SvgHelpCenter from '../../assets/images/iconComponents/HelpCenter';
 
-function SideBar({ className }) {
+function SideBar({className}) {
   const sideBarOptions = {
     optionsOnTop: [
-      { key: 1, value: 'Statistics', icon: StatisticsIcon },
-      { key: 2, value: 'Roll Call', icon: RollCallIcon }
+      { key: 1, value: 'Statistics', icon: <SvgStatistics/>, link: "/statistics" },
+      { key: 2, value: 'Roll Call', icon: <SvgRallCall/>, link: "/" }
     ],
     optionsOnBottom: [
-      { key: 1, value: 'Settings', icon: SettingsIcon },
-      { key: 2, value: 'Help Center', icon: HelpCenterIcon }
+      { key: 1, value: 'Settings', icon: <SvgSettings/>, link: "/settings" },
+      { key: 2, value: 'Help Center', icon: <SvgHelpCenter/>, link: "/help-center" }
     ]
   };
 
+  function isActivePage(currentLink) {
+    return currentLink === window.location.pathname; //returns the current url minus the domain name
+  }
+
   const generateOptions = (options) => {
     return options.map((option) => (
-      <div className="option-container" key={option.key}>
-        <img src={option.icon} alt={'icon'} className="icon" />
-        <span>{option.value}</span>
-      </div>
+      <NavLink key={option.key} to={option.link} activeClassName={`${isActivePage(option.link) ? true : false}` }>
+        <div className="option-container" >
+          {option.icon}
+          <span>{option.value}</span>
+        </div>
+      </NavLink>
     ));
   };
 
