@@ -7,7 +7,7 @@ function TopBar() {
     <div className="top-bar">
       <Dropdown title={'Course'} />
 
-      <CustomButton title="Start Class" />
+      <CustomButton title="Start Class" variant="action" />
     </div>
   );
 }
