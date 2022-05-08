@@ -247,14 +247,20 @@ function StatisticsPage() {
                     display: 'flex',
                     flexDirection: 'row',
                     flexWrap: 'wrap',
-                    justifyContent: 'space-between',
+                    justifyContent: 'flex-start',
                     marginTop: '30px',
                     marginBottom: '30px',
                 }}>
-                    <MetricContainer title={`Overall attendance`} percentage={metrics.overall}
-                                     diff={metrics.overallDiff}/>
-                    <MetricContainer title={`This week's attendance`} percentage={metrics.week}
-                                     diff={metrics.weekDiff}/>
+                    <div style={{marginRight:20}}>
+                        <MetricContainer title={`Overall attendance`} percentage={metrics.overall}
+                                         diff={metrics.overallDiff}/>
+                    </div>
+
+                    <div style={{marginRight:20}}>
+                        <MetricContainer title={`This week's attendance`} percentage={metrics.week}
+                                         diff={metrics.weekDiff}/>
+                    </div>
+
                     <MetricContainer title={`This month's attendance`} percentage={metrics.month}
                                      diff={metrics.monthDiff}/>
                 </div>
