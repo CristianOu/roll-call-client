@@ -222,7 +222,7 @@ function StatisticsPage() {
         }
 
         return (
-            <div style={{marginLeft: '20px', marginRight: '20px'}}>
+            <div style={{marginLeft: '20px', marginRight: '20px', marginTop:'10px'}}>
                 {isTeacher && <Dropdown title={'Course'} handleChange={handleCourseChange} options={courses}/>}
                 {isTeacher &&
                 <div style={{
