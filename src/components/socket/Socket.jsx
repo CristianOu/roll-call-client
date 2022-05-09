@@ -15,7 +15,7 @@ export default function ClientComponent() {
           code: data.code,
           classTeacherId: data.classTeacherId
         });
-      }, 1000 * 60 * 30); //30 minutes
+      }, 1000 * 60 * 10); //10 minutes
     });
 
     socket.on('joinSuccessful', (data) => {
