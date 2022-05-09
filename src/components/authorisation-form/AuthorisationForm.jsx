@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import http from '../../services/http.service';
 import { useNavigate } from 'react-router-dom';
+import './AuthorisationForm.scss';
 
 function AuthorisationForm({ setSession }) {
   let navigate = useNavigate();
@@ -8,6 +9,7 @@ function AuthorisationForm({ setSession }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [showError, setShowError] = useState(false);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -16,12 +18,23 @@ function AuthorisationForm({ setSession }) {
         email: email,
         password: password
       });
-      console.log(response.data);
+      console.log('response', response.data);
 
-      await window.sessionStorage.setItem('userClaims', JSON.stringify(response.data));
-      setSession(response.data);
-      navigate('/');
-      // setSession(response.data);
+      if (response.data.message) {
+        setError(response.data.message);
+        setShowError(true);
+
+        setTimeout(function() {
+          setShowError(false)
+        }, 2500);
+
+      } else {
+        await window.sessionStorage.setItem('userClaims', JSON.stringify(response.data));
+        setSession(response.data);
+        navigate('/');
+      }
+
+      
     } catch (error) {
       console.log(error);
     }
@@ -31,13 +44,15 @@ function AuthorisationForm({ setSession }) {
   };
 
   return (
-    <div className="login-form-container">
-      <div className="buttons-box">
-        <div>Sign In</div>
-        <div>Sign Up</div>
-      </div>
+    <div class='login-wrapper'>
+      <div class="shape"></div>
+      <div class="shape"></div>
+      <div className="login-form-container">
+      <div className="title">Login</div>
       <form onSubmit={handleSubmit} autoComplete="off">
-        <input
+        <label className='field'>
+          <div>Student Email</div>
+          <input
           name="email"
           type={'email'}
           value={email}
@@ -45,20 +60,32 @@ function AuthorisationForm({ setSession }) {
           required
           autoComplete="off"
         />
-        <input
-          name="password"
-          type={'password'}
-          value={password}
-          onChange={(event) => setPassword(event.target.value)}
-          required
-          autoComplete="off"
-        />
+        </label>
+        
+        <label className='field'>
+          <div>Password</div>
+          <input
+            name="password"
+            type={'password'}
+            value={password}
+            onChange={(event) => setPassword(event.target.value)}
+            required
+            autoComplete="off"
+          />
+        </label>
+        
 
         <button type="submit" value="submit-form">
           Log In
         </button>
+
+        
       </form>
+      <div className='signup-text'>Don't have an account? <span>Sign Up</span></div>
+      { showError ? <div className='error'>*Username/password incorrect.</div> : '' }
     </div>
+    </div>
+    
   );
 }
 
