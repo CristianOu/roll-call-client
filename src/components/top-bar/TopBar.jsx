@@ -5,6 +5,7 @@ import CustomButton from '../custom-button/CustomButton';
 import { getTeacherCourses } from '../../services/api';
 import { mapResponseToOptions } from '../../services/helperFunctions';
 import Countdown, { zeroPad } from 'react-countdown';
+import CustomInput from '../custom-input/CustomInput';
 
 const Completion = () => <span>Check in over!</span>;
 
@@ -59,9 +60,14 @@ function TopBar({ generateCode, joinClass, loggedInUser, code }) {
     <div className="top-bar">
       <Dropdown title={'Course'} handleChange={handleCourseChange} options={courses} />
 
-      <input type="text" id="code" />
+      {loggedInUser.role === 'STUDENT'
+        ? [
+            // <input type="text" id="code" />,
+            <CustomInput id="code" />,
 
-      <CustomButton title="Join Class" variant="info" action={joinClass} />
+            <CustomButton title="Join Class" variant="info" action={joinClass} />
+          ]
+        : null}
 
       {classStarted
         ? [
@@ -72,7 +78,7 @@ function TopBar({ generateCode, joinClass, loggedInUser, code }) {
           ]
         : null}
 
-      {classStarted ? null : (
+      {!classStarted && loggedInUser.role === 'TEACHER' ? (
         <CustomButton
           title="Start Class"
           variant="action"
@@ -81,7 +87,7 @@ function TopBar({ generateCode, joinClass, loggedInUser, code }) {
             setClassStarted(true);
           }}
         />
-      )}
+      ) : null}
     </div>
   );
 }
