@@ -31,9 +31,9 @@ function App() {
 
     student = {
       studentId: session.userId,
-      firstName: 'John',
-      lastName: 'Doe',
-      age: 15,
+      firstName: session.firstName,
+      lastName: session.lastName,
+      role: session.role,
       email: session.email
     };
     //console.log(student);
@@ -69,18 +69,25 @@ function App() {
   }, []);
 
   useEffect(() => {
-    // http.get('/').then((res) => {
-    //   setData(res.data);
-    // });
-    async function fetchSession() {
-      try {
-        const response = await http.get('/getsession');
-        setSession(response.data);
-      } catch (error) {
-        console.log(error);
-      }
+    const userClaims = JSON.parse(window.sessionStorage.getItem('userClaims'));
+
+    console.log('claims', userClaims);
+
+    if (userClaims) {
+      setSession(userClaims);
+    } else {
+      console.log('You need to log in');
     }
-    fetchSession();
+
+    // async function fetchSession() {
+    //   try {
+    //     const response = await http.get('/getsession');
+    //     setSession(response.data);
+    //   } catch (error) {
+    //     console.log(error);
+    //   }
+    // }
+    // // fetchSession();
   }, []);
 
   console.log('students', students);
