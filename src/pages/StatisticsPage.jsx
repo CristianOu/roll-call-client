@@ -146,11 +146,9 @@ const tableColumns = {
         }]
 }
 
-function StatisticsPage() {
-    // TODO: get user role from app state
-    const isTeacher = true;
-    // TODO: get userId from app state
-    const userId = 1;
+function StatisticsPage(loggedInUser) {
+    const isTeacher = loggedInUser.loggedInUser.role === 'TEACHER';
+    const userId = loggedInUser.loggedInUser.userId;
     const [tableData, setTableData] = useState([]);
     const [selectedCourse, setSelectedCourse] = useState(undefined);
     const [metrics, setMetrics] = useState({overall: 0, week: 0, month: 0});
@@ -161,6 +159,7 @@ function StatisticsPage() {
     useEffect(() => {
         if (isTeacher) {
             getTeacherCourses(userId).then((response) => {
+                console.log('get teacher courses = ',response)
                 if (response.data.message !== 'Something went wrong') {
                     setCourses(mapResponseToOptions(response.data));
                     setLoading(false);
@@ -183,11 +182,12 @@ function StatisticsPage() {
                 setError('Something went wrong')
             })
         }
-    }, [isTeacher]);
+    }, [isTeacher, userId]);
 
     useEffect(() => {
         if (isTeacher && selectedCourse) {
             getTeacherStatistics(userId, selectedCourse.class_id, selectedCourse.course_id).then((response) => {
+                console.log('get teacher statistics = ',response)
                 if (response.data.message !== 'Something went wrong') {
                     setMetrics({
                         overall: response.data['classAttendance'],
@@ -206,7 +206,7 @@ function StatisticsPage() {
                 setError('Something went wrong');
             });
         }
-    }, [selectedCourse, isTeacher]);
+    }, [selectedCourse, isTeacher, userId]);
 
     const handleCourseChange = (option) => {
         setSelectedCourse(option.value);

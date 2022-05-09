@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import './App.scss';
-import http from './services/http.service';
 import StatisticsPage from './pages/StatisticsPage';
 import SideBar from './components/side-bar/SideBar';
 import '@fontsource/plus-jakarta-sans'; // Defaults to weight 400.
@@ -14,7 +13,6 @@ const ENDPOINT = 'http://localhost:8080/';
 const socket = socketIOClient(ENDPOINT);
 
 function App() {
-  const [data, setData] = useState(0);
   const [students, setStudents] = useState([]);
   const [code, setCode] = useState('');
 
@@ -119,7 +117,7 @@ function App() {
           path="/statistics"
           element={
             session.userId ? (
-              <StatisticsPage />
+              <StatisticsPage loggedInUser={session}/>
             ) : (
               <LogInPage className={'login-container'} setSession={setSession} />
             )
