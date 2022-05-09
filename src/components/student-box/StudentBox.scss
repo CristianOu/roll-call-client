@@ -49,4 +49,8 @@
     display: flex;
     justify-content: center;
   }
+
+  &:last-child {
+    margin-bottom: 10rem;
+  }
 }
