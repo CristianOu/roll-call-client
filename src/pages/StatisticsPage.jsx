@@ -159,7 +159,6 @@ function StatisticsPage(loggedInUser) {
     useEffect(() => {
         if (isTeacher) {
             getTeacherCourses(userId).then((response) => {
-                console.log('get teacher courses = ',response)
                 if (response.data.message !== 'Something went wrong') {
                     setCourses(mapResponseToOptions(response.data));
                     setLoading(false);
@@ -187,7 +186,6 @@ function StatisticsPage(loggedInUser) {
     useEffect(() => {
         if (isTeacher && selectedCourse) {
             getTeacherStatistics(userId, selectedCourse.class_id, selectedCourse.course_id).then((response) => {
-                console.log('get teacher statistics = ',response)
                 if (response.data.message !== 'Something went wrong') {
                     setMetrics({
                         overall: response.data['classAttendance'],

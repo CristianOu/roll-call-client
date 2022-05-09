@@ -12,7 +12,7 @@ export const mapResponseToTableData = (data) => {
                 email: property,
                 firstName: `${data[property]['firstName']}`,
                 lastName: `${data[property]['lastName']}`,
-                attendance: data[property]['attendance']
+                attendance: Number(data[property]['attendance'])
             })
         }
     }
