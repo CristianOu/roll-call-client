@@ -51,7 +51,7 @@ function AuthorisationForm({ setSession }) {
       <div className="title">Login</div>
       <form onSubmit={handleSubmit} autoComplete="off">
         <label className='field'>
-          <div>Student Email</div>
+          <div>Email</div>
           <input
           name="email"
           type={'email'}
