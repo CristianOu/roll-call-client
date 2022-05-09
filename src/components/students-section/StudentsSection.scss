@@ -1,0 +1,21 @@
+@use "../../sass/main.scss" as main;
+
+.students-section {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  width: 100%;
+  height: 100%;
+  margin: 0 auto;
+  overflow: auto;
+
+  &.empty {
+    justify-content: center;
+  }
+
+  .empty-text {
+    align-self: center;
+    font-size: main.$fs4;
+    color: main.$search-bar-placeholder-color;
+  }
+}
