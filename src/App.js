@@ -94,7 +94,7 @@ function App() {
 
   return (
     <div className="App">
-      {session.userId ? <SideBar className="side-bar-container" /> : ''}
+      {session.userId ? <SideBar className='side-bar-container' /> : ''}
       <Routes>
         <Route
           path="/"
@@ -137,7 +137,7 @@ function App() {
           path="*"
           element={
             session.userId ? (
-              <main style={{ padding: '1rem' }}>
+              <main style={{ padding: '1rem', marginLeft: '240px' }}>
                 <p>There's nothing here for now!</p>
               </main>
             ) : (
