@@ -74,7 +74,7 @@ function TopBar({ generateCode, joinClass, loggedInUser, code }) {
             <span className="code-label">
               Code: <span className="code">{code}</span>
             </span>,
-            <Countdown date={Date.now() + 1800000} renderer={renderer} />
+            <Countdown date={Date.now() + 600000} renderer={renderer} />
           ]
         : null}
 
