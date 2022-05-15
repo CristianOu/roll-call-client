@@ -34,6 +34,16 @@ body {
     width: 100vw;
     background-color: #0d0e0e;
     position: relative;
+
+    .education-name {
+      color: white;
+      font-size: main.$fs6;
+      position: absolute;
+      top: 15%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 70%;
+    }
   }
 }
 
