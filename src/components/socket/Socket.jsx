@@ -49,13 +49,6 @@ function generateCode(teacherId) {
 
 function joinClass(code, student) {
   code = document.getElementById('code').value;
-  student = {
-    studentId: 10,
-    firstName: 'Ondrej',
-    lastName: 'Surname',
-    age: 15,
-    email: 'name.surname@gmail.com'
-  };
   //console.log(student);
   //studentId = 10;
   socket.emit('attendLecture', { code, student });
