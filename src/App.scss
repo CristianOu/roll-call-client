@@ -16,7 +16,7 @@ body {
     position: fixed;
     min-width: 230px;
     max-width: 230px;
-    height: 100vh;
+    height: 100%;
     background-color: main.$side-bar-color;
     color: main.$side-bar-text-color;
   }
@@ -28,12 +28,22 @@ body {
     margin-left: 230px;
   }
 
-  .login-container {
+  .authentication-page-container {
     margin: 0;
     height: 100vh;
     width: 100vw;
     background-color: #0d0e0e;
     position: relative;
+
+    .education-name {
+      color: white;
+      font-size: main.$fs6;
+      position: absolute;
+      top: 15%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 70%;
+    }
   }
 }
 

@@ -5,7 +5,7 @@ import SideBar from './components/side-bar/SideBar';
 import '@fontsource/plus-jakarta-sans'; // Defaults to weight 400.
 import { Route, Routes, Navigate } from 'react-router-dom';
 import RollCall from './pages/RollCall';
-import LogInPage from './pages/LogInPage';
+import AuthenticationPage from './pages/AuthenticationPage';
 
 import socketIOClient from 'socket.io-client';
 //change this when it will be hosted
@@ -69,35 +69,21 @@ function App() {
   useEffect(() => {
     const userClaims = JSON.parse(window.sessionStorage.getItem('userClaims'));
 
-    console.log('claims', userClaims);
+    // console.log('claims', userClaims);
 
     if (userClaims) {
       setSession(userClaims);
     } else {
       console.log('You need to log in');
     }
-
-    // async function fetchSession() {
-    //   try {
-    //     const response = await http.get('/getsession');
-    //     setSession(response.data);
-    //   } catch (error) {
-    //     console.log(error);
-    //   }
-    // }
-    // // fetchSession();
   }, []);
 
-  console.log('students', students);
-
-  console.log('session', session);
-
   return (
-    <div className="App">
+    <div className='App'>
       {session.userId ? <SideBar className='side-bar-container' /> : ''}
       <Routes>
         <Route
-          path="/"
+          path='/'
           element={
             session.userId ? (
               <RollCall
@@ -109,39 +95,39 @@ function App() {
                 loggedInUser={session}
               />
             ) : (
-              <LogInPage className={'login-container'} setSession={setSession} />
+              <AuthenticationPage />
             )
           }
         />
         <Route
-          path="/statistics"
+          path='/statistics'
           element={
             session.userId ? (
               <StatisticsPage loggedInUser={session}/>
             ) : (
-              <LogInPage className={'login-container'} setSession={setSession} />
+              <AuthenticationPage />
             )
           }
         />
         <Route
-          path="/login"
+          path='/login'
           element={
             session.userId ? (
-              <Navigate to="/" />
+              <Navigate to='/' />
             ) : (
-              <LogInPage className={'login-container'} setSession={setSession} />
+              <AuthenticationPage />
             )
           }
         />
         <Route
-          path="*"
+          path='*'
           element={
             session.userId ? (
               <main style={{ padding: '1rem', marginLeft: '240px' }}>
                 <p>There's nothing here for now!</p>
               </main>
             ) : (
-              <LogInPage className={'login-container'} setSession={setSession} />
+              <AuthenticationPage />
             )
           }
         />
