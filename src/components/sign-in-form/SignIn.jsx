@@ -52,7 +52,7 @@ function SignIn() {
         
 
         <button type="submit" value="submit-form">
-          Log In
+          Sign In
         </button>
 
         
