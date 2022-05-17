@@ -23,3 +23,9 @@ export const getSignIn = (email, password) => {
         password: password
     });       
 }
+
+// fetches data from: https://confluence.govcloud.dk/display/FDAPI/Danish+Meteorological+Institute+-+Open+Data
+export const getWeatherData = () => {
+    const apiKey = 'df4bf8b8-a641-459f-bf69-36c1b8de3ceb';
+    return http.get(`https://dmigw.govcloud.dk/v2/metObs/collections/observation/items?api-key=${apiKey}&period=latest&bbox=12.5,55.6,12.6,55.7&parameterId=temp_dry`)
+}

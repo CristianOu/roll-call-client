@@ -1,8 +1,8 @@
 import React from 'react';
 import TopBar from '../components/top-bar/TopBar';
 import UtilityBar from '../components/utility-bar/UtilityBar';
-import StudentBox from '../components/student-box/StudentBox';
 import StudentsSection from '../components/students-section/StudentsSection';
+import WeatherInfoBar from "../components/weather-container/WeatherInfoBar";
 
 function RollCall({ className, generateCode, joinClass, students, code, loggedInUser }) {
   return (
@@ -15,6 +15,8 @@ function RollCall({ className, generateCode, joinClass, students, code, loggedIn
       />
 
       <UtilityBar />
+
+      <WeatherInfoBar />
 
       <StudentsSection students={students} />
     </div>
