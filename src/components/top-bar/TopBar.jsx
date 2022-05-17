@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Dropdown from '../dropdown/Dropdown';
 import './TopBar.scss';
 import CustomButton from '../custom-button/CustomButton';
@@ -7,7 +7,8 @@ import { mapResponseToOptions } from '../../services/helperFunctions';
 import Countdown, { zeroPad } from 'react-countdown';
 import CustomInput from '../custom-input/CustomInput';
 import ProfileIcon from '../../assets/images/profile-icon-test.svg';
-import { Context as AuthContext} from '../../contexts/AuthContext';
+import useAuth from '../../hooks/useAuth';
+import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 
 const Completion = () => <span>Check in over!</span>;
 
@@ -27,13 +28,15 @@ const renderer = ({ minutes, seconds, completed }) => {
   }
 };
 
-function ProfileModal({signOut}) {
+function ProfileModal({ signOut }) {
   return (
-    <div className='modal-container'>
-      <div className='option'>Profile</div>
-      <div className='option' onClick={() => signOut()}>Sign Out</div> 
+    <div className="modal-container">
+      <div className="option">Profile</div>
+      <div className="option" onClick={() => signOut()}>
+        Sign Out
+      </div>
     </div>
-  )
+  );
 }
 
 function TopBar({ generateCode, joinClass, loggedInUser, code }) {
@@ -43,7 +46,9 @@ function TopBar({ generateCode, joinClass, loggedInUser, code }) {
   const [loading, setLoading] = useState(true);
   const [courses, setCourses] = useState([]);
   const [toggleModal, setToggleModal] = useState(false);
-  const { signOut } = useContext(AuthContext);
+  const { signOut } = useAuth();
+
+  const axios = useAxiosPrivate();
 
   const handleCourseChange = (option) => {
     setSelectedCourse(option.value);
@@ -52,7 +57,9 @@ function TopBar({ generateCode, joinClass, loggedInUser, code }) {
   useEffect(() => {
     // get user id from state
     const userId = 1;
-    getTeacherCourses(userId)
+    axios
+      .get(`/api/users/classes/courses/all/${userId}`)
+      // getTeacherCourses(userId)
       .then((response) => {
         if (response.data.message !== 'Something went wrong') {
           setCourses(mapResponseToOptions(response.data));
@@ -70,7 +77,7 @@ function TopBar({ generateCode, joinClass, loggedInUser, code }) {
   }, []);
 
   return (
-    <div className='top-bar-container'>
+    <div className="top-bar-container">
       <div className="top-bar">
         <Dropdown title={'Course'} handleChange={handleCourseChange} options={courses} />
 
@@ -103,16 +110,11 @@ function TopBar({ generateCode, joinClass, loggedInUser, code }) {
           />
         ) : null}
       </div>
-      <div className='profile-img-container'>
-        <img 
-          src={ProfileIcon} 
-          alt='icon'
-          onClick={() => setToggleModal(!toggleModal)}
-        />
+      <div className="profile-img-container">
+        <img src={ProfileIcon} alt="icon" onClick={() => setToggleModal(!toggleModal)} />
       </div>
-      { toggleModal ? <ProfileModal signOut={signOut} /> : '' }
+      {toggleModal ? <ProfileModal signOut={signOut} /> : ''}
     </div>
-    
   );
 }
 
