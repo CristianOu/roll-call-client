@@ -1,4 +1,4 @@
-import {useEffect, useState} from "react";
+import {useEffect, useState,} from "react";
 import {getWeatherData} from "../../services/api";
 
 function WeatherInfoBar() {
@@ -30,10 +30,12 @@ function WeatherInfoBar() {
             return <text>Loading...</text>
         }
 
+        // console.log('mock data = ', data) // for testing only
+
         return (
             <div style={{width: '100%', height: 50 }}>
-                <text style={{marginRight: 20}}>Temperature: {data.temperature}</text>
-                <text>Observed at: {data.observedAt}</text>
+                <text data-testid="temperature" style={{marginRight: 20}}>Temperature: {data.temperature}</text>
+                <text data-testid="observedAt">Observed at: {data.observedAt}</text>
             </div>
         );
     }
