@@ -1,13 +1,9 @@
-// import React from 'react';
 import createDataContext from './createDataContext';
-// import { navigate } from '../navigationRef';
-import {getSignIn} from '../services/api';
 import http from '../services/http.service';
-
-
 
 const ACTIONS = {
   ADD_ERROR: 'add_error',
+  REFRESH_TOKEN: 'refresh_token',
   AUTHENTICATE: 'authenticate',
   CLEAR_ERROR_MESSAGE: 'clear_error_message',
   SIGN_OUT: 'sign_out'
@@ -17,12 +13,14 @@ const authReducer = (state, action) => {
   switch (action.type) {
     case ACTIONS.ADD_ERROR:
       return { ...state, errorMessage: action.payload };
+    case ACTIONS.REFRESH_TOKEN:
+      return { ...state, user: { ...state.user, accessToken: action.payload } };
     case ACTIONS.AUTHENTICATE:
-      return { errorMessage: '', token: action.payload }; // we don't need to persist state; signin and signup are the same
+      return { errorMessage: '', user: action.payload };
     case ACTIONS.CLEAR_ERROR_MESSAGE:
       return { ...state, errorMessage: '' };
     case ACTIONS.SIGN_OUT:
-      return { token: null, errorMessage: '' };
+      return { user: null, errorMessage: '' };
     default:
       return state;
   }
@@ -33,7 +31,7 @@ const clearErrorMessage = (dispatch) => () => {
 };
 
 const tryLocalSignIn = (dispatch) => async () => {
-  console.log('')
+  console.log('');
   // const token = await AsyncStorage.getItem('token');
 
   // if (token) {
@@ -50,15 +48,10 @@ const tryLocalSignIn = (dispatch) => async () => {
   // }
 };
 
-const finishOnboarding = () => async () => {
-  console.log('')
-  // await AsyncStorage.setItem('viewedOnboarding', 'true');
-
-  // navigate('SignIn');
-};
-
-const signUp =(dispatch) => async ({ email, password }) => {
-  console.log('')
+const signUp =
+  (dispatch) =>
+  async ({ email, password }) => {
+    console.log('');
     // implicit return, doesn't have to be specified
     // try {
     //   const response = await API.post('/signup', { email, password });
@@ -74,36 +67,71 @@ const signUp =(dispatch) => async ({ email, password }) => {
     // }
   };
 
-const signIn = (dispatch) => async ( {email, password} ) => {
-  try {
-    const response = await getSignIn(email, password);
-
-    if (response.data.message) {
-      dispatch({ type: ACTIONS.ADD_ERROR, payload: '* Email/Password incorrect.'});
-      return true;
-    } else {
-      window.sessionStorage.setItem('userClaims', JSON.stringify(response.data));
-      dispatch({ type: ACTIONS.AUTHENTICATE, payload: response.data});
-      window.location.pathname = '/';
+const refreshToken =
+  (dispatch) =>
+  async ({ accessToken }) => {
+    try {
+      dispatch({ type: ACTIONS.REFRESH_TOKEN, payload: accessToken });
+    } catch (error) {
+      let message = '';
+      if (error.response?.status === 422) {
+        message = 'Missing Username or Password';
+      } else if (error.response?.status === 401) {
+        message = 'Unauthorized';
+      } else {
+        message = 'Something went wrong with login';
+      }
+      dispatch({ type: ACTIONS.ADD_ERROR, payload: message });
     }
-  } catch (error) {
-    dispatch({ type: ACTIONS.ADD_ERROR, payload: 'Internal Server Error'});
-    return true;
-  }
-};
+  };
+
+const signIn =
+  (dispatch) =>
+  async ({ email, password, navigate, from }) => {
+    try {
+      const response = await http.post(
+        '/api/users/login',
+        {
+          email: email,
+          password: password
+        },
+        {
+          headers: { 'Content-Type': 'application/json' }
+          // withCredentials: true
+        }
+      );
+      console.log(response?.data);
+
+      // const accessToken = response?.data?.accessToken;
+      // const role = response?.data?.role;
+
+      if (response.data) {
+        // window.sessionStorage.setItem('userClaims', JSON.stringify(response.data));
+        dispatch({ type: ACTIONS.AUTHENTICATE, payload: response.data });
+        navigate(from, { replace: true });
+      }
+    } catch (error) {
+      let message = '';
+      if (error.response?.status === 422) {
+        message = 'Missing Username or Password';
+      } else if (error.response?.status === 401) {
+        message = 'Unauthorized';
+      } else {
+        message = 'Something went wrong with login';
+      }
+      dispatch({ type: ACTIONS.ADD_ERROR, payload: message });
+    }
+  };
 
 const signOut = (dispatch) => () => {
-  console.log('signout')
+  console.log('signout');
   window.sessionStorage.removeItem('userClaims');
   dispatch({ type: ACTIONS.SIGN_OUT });
   window.location.pathname = '/login';
-  // await AsyncStorage.removeItem('token');
-  // dispatch({ type: ACTIONS.SIGN_OUT });
-  // navigate('loginFlow');
 };
 
 export const { Provider, Context } = createDataContext(
   authReducer,
-  { signIn, signOut, signUp, clearErrorMessage, tryLocalSignIn, finishOnboarding },
-  { token: null, errorMessage: '' }
+  { signIn, signOut, signUp, clearErrorMessage, tryLocalSignIn, refreshToken },
+  { user: null, errorMessage: '' }
 );
