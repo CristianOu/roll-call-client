@@ -8,9 +8,12 @@ const useRefreshToken = () => {
   return async () => {
     const response = await http.get('/refresh', { withCredentials: true });
 
-    if (response.data.accessToken) {
+    if (response.data.accessToken && response.data.claims) {
       console.log('REFRESH', response.data);
-      refreshToken({ accessToken: response.data.accessToken });
+      refreshToken({
+        accessToken: response.data.accessToken,
+        claims: response.data.claims
+      });
     }
     return response.data.accessToken;
   };

@@ -12,6 +12,7 @@ import http from './services/http.service';
 import Layout from './components/layout/Layout';
 import RequireAuth from './components/require-auth/RequireAuth';
 import UnauthorizedPage from './pages/unauthorized-page/UnauthorizedPage';
+import PersistLogin from './components/persist-login/PersistLogin';
 //change this when it will be hosted
 const ENDPOINT = 'http://localhost:8080/';
 const socket = socketIOClient(ENDPOINT);
@@ -94,21 +95,26 @@ function App() {
     <Routes>
       <Route path="/" element={<Layout />}>
         {/*protected routes*/}
-        <Route element={<RequireAuth allowedRoles={['TEACHER']} />}>
-          <Route
-            path=""
-            element={
-              <RollCall
-                generateCode={generateCode}
-                joinClass={joinClass}
-                students={students}
-                code={code}
-                loggedInUser={session}
-              />
-            }
-          />
+        <Route element={<PersistLogin />}>
+          <Route element={<RequireAuth allowedRoles={['TEACHER']} />}>
+            <Route
+              path=""
+              element={
+                <RollCall
+                  generateCode={generateCode}
+                  joinClass={joinClass}
+                  students={students}
+                  code={code}
+                  loggedInUser={session}
+                />
+              }
+            />
 
-          <Route path="statistics" element={<StatisticsPage loggedInUser={session} />} />
+            <Route
+              path="statistics"
+              element={<StatisticsPage loggedInUser={session} />}
+            />
+          </Route>
         </Route>
 
         <Route path="unauthorized" element={<UnauthorizedPage />} />

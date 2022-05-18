@@ -14,7 +14,7 @@ const authReducer = (state, action) => {
     case ACTIONS.ADD_ERROR:
       return { ...state, errorMessage: action.payload };
     case ACTIONS.REFRESH_TOKEN:
-      return { ...state, user: { ...state.user, accessToken: action.payload } };
+      return { ...state, user: action.payload };
     case ACTIONS.AUTHENTICATE:
       return { errorMessage: '', user: action.payload };
     case ACTIONS.CLEAR_ERROR_MESSAGE:
@@ -69,9 +69,11 @@ const signUp =
 
 const refreshToken =
   (dispatch) =>
-  async ({ accessToken }) => {
+  async ({ accessToken, claims }) => {
     try {
-      dispatch({ type: ACTIONS.REFRESH_TOKEN, payload: accessToken });
+      const user = { accessToken, claims };
+
+      dispatch({ type: ACTIONS.REFRESH_TOKEN, payload: user });
     } catch (error) {
       let message = '';
       if (error.response?.status === 422) {
@@ -123,12 +125,18 @@ const signIn =
     }
   };
 
-const signOut = (dispatch) => () => {
-  console.log('signout');
-  window.sessionStorage.removeItem('userClaims');
-  dispatch({ type: ACTIONS.SIGN_OUT });
-  window.location.pathname = '/login';
-};
+const signOut =
+  (dispatch) =>
+  async ({ navigate }) => {
+    try {
+      const response = await http.get('/logout');
+    } catch (err) {
+      console.log(err);
+    }
+
+    dispatch({ type: ACTIONS.SIGN_OUT });
+    navigate('/login', { replace: true });
+  };
 
 export const { Provider, Context } = createDataContext(
   authReducer,

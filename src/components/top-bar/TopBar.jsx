@@ -9,6 +9,7 @@ import CustomInput from '../custom-input/CustomInput';
 import ProfileIcon from '../../assets/images/profile-icon-test.svg';
 import useAuth from '../../hooks/useAuth';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
+import { useNavigate } from 'react-router-dom';
 
 const Completion = () => <span>Check in over!</span>;
 
@@ -28,11 +29,11 @@ const renderer = ({ minutes, seconds, completed }) => {
   }
 };
 
-function ProfileModal({ signOut }) {
+function ProfileModal({ signOut, navigator }) {
   return (
     <div className="modal-container">
       <div className="option">Profile</div>
-      <div className="option" onClick={() => signOut()}>
+      <div className="option" onClick={() => signOut({ navigator })}>
         Sign Out
       </div>
     </div>
@@ -49,6 +50,7 @@ function TopBar({ generateCode, joinClass, loggedInUser, code }) {
   const { signOut } = useAuth();
 
   const axios = useAxiosPrivate();
+  const navigate = useNavigate();
 
   const handleCourseChange = (option) => {
     setSelectedCourse(option.value);
@@ -113,7 +115,7 @@ function TopBar({ generateCode, joinClass, loggedInUser, code }) {
       <div className="profile-img-container">
         <img src={ProfileIcon} alt="icon" onClick={() => setToggleModal(!toggleModal)} />
       </div>
-      {toggleModal ? <ProfileModal signOut={signOut} /> : ''}
+      {toggleModal ? <ProfileModal signOut={signOut} navigator={navigate} /> : ''}
     </div>
   );
 }
