@@ -8,7 +8,7 @@ import RollCall from './pages/RollCall';
 import AuthenticationPage from './pages/AuthenticationPage';
 
 import socketIOClient from 'socket.io-client';
-//change this when it will be hosted
+// change this when it will be hosted
 const ENDPOINT = 'http://localhost:8080/';
 const socket = socketIOClient(ENDPOINT);
 
@@ -20,7 +20,7 @@ function App() {
 
   const generateCode = (teacherId) => {
     teacherId = 1;
-    //console.log("generate code", teacherId);
+    // console.log("generate code", teacherId);
     socket.emit('generateCode', teacherId);
   };
 
@@ -32,10 +32,10 @@ function App() {
       firstName: session.firstName,
       lastName: session.lastName,
       role: session.role,
-      email: session.email
+      email: session.email,
     };
-    //console.log(student);
-    //studentId = 10;
+    // console.log(student);
+    // studentId = 10;
     socket.emit('attendLecture', { code, student });
   };
 
@@ -44,12 +44,12 @@ function App() {
       console.log('code generated ', data);
       setCode(data.code);
       setTimeout(() => {
-        //console.log('Timed out');
+        // console.log('Timed out');
         socket.emit('deleteCode', {
           code: data.code,
-          classTeacherId: data.classTeacherId
+          classTeacherId: data.classTeacherId,
         });
-      }, 1000 * 60 * 10); //10 minutes
+      }, 1000 * 60 * 10); // 10 minutes
     });
 
     socket.on('joinSuccessful', (data) => {
@@ -79,11 +79,11 @@ function App() {
   }, []);
 
   return (
-    <div className='App'>
-      {session.userId ? <SideBar className='side-bar-container' /> : ''}
+    <div className="App">
+      {session.userId ? <SideBar className="side-bar-container" /> : ''}
       <Routes>
         <Route
-          path='/'
+          path="/"
           element={
             session.userId ? (
               <RollCall
@@ -100,27 +100,27 @@ function App() {
           }
         />
         <Route
-          path='/statistics'
+          path="/statistics"
           element={
             session.userId ? (
-              <StatisticsPage loggedInUser={session}/>
+              <StatisticsPage loggedInUser={session} />
             ) : (
               <AuthenticationPage />
             )
           }
         />
         <Route
-          path='/login'
+          path="/login"
           element={
             session.userId ? (
-              <Navigate to='/' />
+              <Navigate to="/" />
             ) : (
               <AuthenticationPage />
             )
           }
         />
         <Route
-          path='*'
+          path="*"
           element={
             session.userId ? (
               <main style={{ padding: '1rem', marginLeft: '240px' }}>
