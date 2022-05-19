@@ -24,3 +24,8 @@ yarn-debug.log*
 yarn-error.log*
 
 .idea
+
+
+# Sonar
+sonar-project.properties
+.scannerwork

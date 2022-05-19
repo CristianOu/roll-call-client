@@ -26,6 +26,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
+    "coverageTest": "react-scripts test --watchAll=false --coverage --testResultsProcessor=jest-sonar-reporter",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -48,11 +49,24 @@
   },
   "devDependencies": {
     "cross-env": "^7.0.3",
-    "prettier": "2.6.2"
+    "jest-sonar-reporter": "^2.0.0",
+    "prettier": "2.6.2",
+    "sonarqube-scanner": "^2.8.1"
   },
   "prettier": {
     "singleQuote": true,
     "trailingComma": "none",
     "printWidth": 90
+  },
+  "jest": {
+    "coveragePathIgnorePatterns": [
+      "/node_modules/"
+    ]
+  },
+  "jestSonar": {
+    "reportPath": "coverage",
+    "reportFile": "test-reporter.xml",
+    "indent": 4
   }
+
 }
