@@ -58,6 +58,7 @@ function AuthorisationForm({ setSession }) {
           value={email}
           onChange={(event) => setEmail(event.target.value)}
           required
+          maxLength = "127"
           autoComplete="off"
         />
         </label>
@@ -71,6 +72,7 @@ function AuthorisationForm({ setSession }) {
             onChange={(event) => setPassword(event.target.value)}
             required
             autoComplete="off"
+            maxLength = "30"
           />
         </label>
         
