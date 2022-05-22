@@ -1,25 +1,76 @@
 @use "../../sass/main.scss" as main;
 
-.top-bar {
+.top-bar-container {
   display: flex;
-  justify-content: space-between;
-  padding: 10px 20px;
-
   background-color: main.$component-box-color;
+  position: relative;
 
-  .countdown {
-    align-self: center;
-    font-size: main.$fs3;
-    width: 200px;
+  .top-bar {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 20px;
+    width: 90%;
+  
+    .countdown {
+      align-self: center;
+      font-size: main.$fs3;
+      width: 200px;
+    }
+  
+    .code-label {
+      font-size: main.$fs4;
+      align-self: center;
+  
+      .code {
+        font-size: main.$fs5;
+        font-weight: bold;
+      }
+    }
   }
 
-  .code-label {
-    font-size: main.$fs4;
-    align-self: center;
+  .profile-img-container {
+    width: 10%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
 
-    .code {
-      font-size: main.$fs5;
-      font-weight: bold;
+    img {
+      cursor: pointer;
+      margin-left: 5px;
+      border-radius: 50%;
+      border: 3px solid main.$component-box-color;
+
+      &:hover {
+        border:3px solid grey;
+        transition: all .1s;
+      }
+    }
+  }
+
+  .modal-container {
+    background-color: main.$side-bar-color;
+    position: absolute;
+    top: 100%;
+    left: calc(90% - 155px);
+    width: 200px;
+    height: 100px;
+    z-index: 1;
+    border-radius: 5px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    row-gap: 2px;
+    color: white;
+
+    .option {
+      padding: 5px 0;
+      cursor: pointer;
+
+      &:hover {
+        background-color: grey;
+      }
     }
   }
 }
+
+

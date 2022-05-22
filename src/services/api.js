@@ -16,3 +16,10 @@ export const getTeacherCourses = (teacherId) => {
 export const getStudentStatistics = (studentId) => {
     return http.get(`/api/users/students/attendance/${studentId}`)
 }
+
+export const getSignIn = (email, password) => {
+    return http.post('/api/users/login', {
+        email: email,
+        password: password
+    });       
+}
