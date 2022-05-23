@@ -21,29 +21,11 @@ body {
     color: main.$side-bar-text-color;
   }
 
-  .roll-call-page-container {
+  .page-container {
     display: flex;
     flex-direction: column;
     width: 100%;
     margin-left: 230px;
-  }
-
-  .authentication-page-container {
-    margin: 0;
-    height: 100vh;
-    width: 100vw;
-    background-color: #0d0e0e;
-    position: relative;
-
-    .education-name {
-      color: white;
-      font-size: main.$fs6;
-      position: absolute;
-      top: 15%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 70%;
-    }
   }
 }
 
