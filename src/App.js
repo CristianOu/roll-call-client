@@ -1,18 +1,16 @@
 import { useEffect, useState } from 'react';
 import './App.scss';
 import StatisticsPage from './pages/StatisticsPage';
-import SideBar from './components/side-bar/SideBar';
 import '@fontsource/plus-jakarta-sans'; // Defaults to weight 400.
-import { Route, Routes, Navigate } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import RollCall from './pages/RollCall';
 import AuthenticationPage from './pages/authentication-page/AuthenticationPage';
-
 import socketIOClient from 'socket.io-client';
-import http from './services/http.service';
 import Layout from './components/layout/Layout';
 import RequireAuth from './components/require-auth/RequireAuth';
 import UnauthorizedPage from './pages/unauthorized-page/UnauthorizedPage';
 import PersistLogin from './components/persist-login/PersistLogin';
+import useAuth from './hooks/useAuth';
 //change this when it will be hosted
 const ENDPOINT = 'http://localhost:8080/';
 const socket = socketIOClient(ENDPOINT);
@@ -20,25 +18,29 @@ const socket = socketIOClient(ENDPOINT);
 function App() {
   const [students, setStudents] = useState([]);
   const [code, setCode] = useState('');
+  const { state } = useAuth();
 
-  const [session, setSession] = useState(null);
+  const user = state?.user?.claims;
 
-  const generateCode = (teacherId) => {
-    teacherId = 1;
-    //console.log("generate code", teacherId);
-    socket.emit('generateCode', teacherId);
+  const generateCode = (lecture) => {
+    socket.emit('generateCode', lecture.lecture_id);
   };
 
   const joinClass = (code, student) => {
     code = document.getElementById('code').value;
 
+    console.log(user);
+
     student = {
-      studentId: session.userId,
-      firstName: session.firstName,
-      lastName: session.lastName,
-      role: session.role,
-      email: session.email
+      studentId: user.id,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      role: user.role,
+      email: user.email
     };
+
+    console.log(student);
+
     //console.log(student);
     //studentId = 10;
     socket.emit('attendLecture', { code, student });
@@ -71,32 +73,12 @@ function App() {
     });
   }, []);
 
-  useEffect(() => {
-    // const userClaims = JSON.parse(window.sessionStorage.getItem('userClaims'));
-
-    // const userClaims = { userId: 1 };
-    // console.log('claims', userClaims);
-
-    const getSession = async () => {
-      // const { data } = await http.get('/session');
-      const userClaims = { userId: 1, role: 'TEACHER' };
-
-      if (userClaims) {
-        setSession(userClaims);
-      } else {
-        console.log('You need to log in');
-      }
-    };
-
-    getSession();
-  }, []);
-
   return (
     <Routes>
       <Route path="/" element={<Layout />}>
         {/*protected routes*/}
         <Route element={<PersistLogin />}>
-          <Route element={<RequireAuth allowedRoles={['TEACHER']} />}>
+          <Route element={<RequireAuth allowedRoles={['TEACHER', 'STUDENT']} />}>
             <Route
               path=""
               element={
@@ -105,15 +87,12 @@ function App() {
                   joinClass={joinClass}
                   students={students}
                   code={code}
-                  loggedInUser={session}
+                  loggedInUser={user}
                 />
               }
             />
 
-            <Route
-              path="statistics"
-              element={<StatisticsPage loggedInUser={session} />}
-            />
+            <Route path="statistics" element={<StatisticsPage />} />
           </Route>
         </Route>
 
@@ -126,7 +105,7 @@ function App() {
       <Route
         path="*"
         element={
-          session ? (
+          user ? (
             <main style={{ padding: '1rem', marginLeft: '240px' }}>
               <p>There's nothing here for now!</p>
             </main>

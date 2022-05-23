@@ -2,8 +2,10 @@ import React, { useEffect, useState } from 'react';
 import Dropdown from '../dropdown/Dropdown';
 import './TopBar.scss';
 import CustomButton from '../custom-button/CustomButton';
-import { getTeacherCourses } from '../../services/api';
-import { mapResponseToOptions } from '../../services/helperFunctions';
+import {
+  mapLecturesToOptions,
+  mapResponseToOptions
+} from '../../services/helperFunctions';
 import Countdown, { zeroPad } from 'react-countdown';
 import CustomInput from '../custom-input/CustomInput';
 import ProfileIcon from '../../assets/images/profile-icon-test.svg';
@@ -40,31 +42,34 @@ function ProfileModal({ signOut, navigator }) {
   );
 }
 
-function TopBar({ generateCode, joinClass, loggedInUser, code }) {
+function TopBar({ generateCode, joinClass, code }) {
   const [classStarted, setClassStarted] = useState(false);
-  const [selectedCourse, setSelectedCourse] = useState(undefined);
+  const [selectedLecture, setselectedLecture] = useState(undefined);
   const [error, setError] = useState(undefined);
   const [loading, setLoading] = useState(true);
-  const [courses, setCourses] = useState([]);
+  const [lectures, setLectures] = useState([]);
   const [toggleModal, setToggleModal] = useState(false);
-  const { signOut } = useAuth();
+  const { signOut, state } = useAuth();
+  const loggedInUser = state?.user?.claims;
 
   const axios = useAxiosPrivate();
   const navigate = useNavigate();
 
-  const handleCourseChange = (option) => {
-    setSelectedCourse(option.value);
+  const handleLectureChange = (option) => {
+    setselectedLecture(option.value);
   };
+
+  console.log(selectedLecture);
 
   useEffect(() => {
     // get user id from state
-    const userId = 1;
+    const userId = loggedInUser.id;
     axios
-      .get(`/api/users/classes/courses/all/${userId}`)
-      // getTeacherCourses(userId)
+      .get(`/api/users/lectures/${userId}`)
       .then((response) => {
         if (response.data.message !== 'Something went wrong') {
-          setCourses(mapResponseToOptions(response.data));
+          console.log(response.data);
+          setLectures(mapLecturesToOptions(response.data));
           setLoading(false);
           setError(undefined);
         } else {
@@ -81,7 +86,11 @@ function TopBar({ generateCode, joinClass, loggedInUser, code }) {
   return (
     <div className="top-bar-container">
       <div className="top-bar">
-        <Dropdown title={'Course'} handleChange={handleCourseChange} options={courses} />
+        <Dropdown
+          title={'Lecture'}
+          handleChange={handleLectureChange}
+          options={lectures}
+        />
 
         {loggedInUser.role === 'STUDENT'
           ? [
@@ -106,7 +115,7 @@ function TopBar({ generateCode, joinClass, loggedInUser, code }) {
             title="Start Class"
             variant="action"
             action={() => {
-              generateCode();
+              generateCode(selectedLecture);
               setClassStarted(true);
             }}
           />
