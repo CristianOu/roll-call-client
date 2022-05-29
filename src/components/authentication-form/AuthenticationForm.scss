@@ -1,7 +1,7 @@
 @use "../../sass/main.scss" as main;
 
 .authentication-wrapper {
-  top: 50%;
+  top: 55%;
   left: 50%;
   transform: translate(-50%,-50%);
   position: absolute;
@@ -9,8 +9,8 @@
   height: 400px;
 
   .shape{
-    height: 170px;
-    width: 170px;
+    height: 105px;
+    width: 105px;
     position: absolute;
     border-radius: 50%;
   
@@ -19,8 +19,8 @@
         #1845ad,
         #23a2f6
       );
-      left: -71px;
-      top: -102px;
+      left: -41px;
+      top: -40px;
     }
   
     &:nth-child(2) {
@@ -29,8 +29,8 @@
         #ff512f,
         #f09819
       );
-      right: -95px;
-      bottom: -89px;
+      right: -43px;
+      bottom: -45px;
     }
   }
   
