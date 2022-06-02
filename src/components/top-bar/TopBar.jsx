@@ -35,7 +35,7 @@ function ProfileModal({ signOut, navigator }) {
   return (
     <div className="modal-container">
       <div className="option">Profile</div>
-      <div className="option" onClick={() => signOut({ navigator })}>
+      <div id="signOut" className="option" onClick={() => signOut({ navigator })}>
         Sign Out
       </div>
     </div>
@@ -122,7 +122,7 @@ function TopBar({ generateCode, joinClass, code }) {
         ) : null}
       </div>
       <div className="profile-img-container">
-        <img src={ProfileIcon} alt="icon" onClick={() => setToggleModal(!toggleModal)} />
+        <img id="profilePicture" src={ProfileIcon} alt="icon" onClick={() => setToggleModal(!toggleModal)} />
       </div>
       {toggleModal ? <ProfileModal signOut={signOut} navigator={navigate} /> : ''}
     </div>
