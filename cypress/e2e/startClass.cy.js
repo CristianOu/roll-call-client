@@ -26,9 +26,15 @@ async function executeApiLogin(firstName, lastName, userRole, email, password, d
 }
 
 function selectAndStartClass() {
+  // clicks on the classes dropdown
   cy.get('.drop-down div:first').click();
+
+  //clicks on the first existing class
   cy.get('.drop-down div:first div:last-child div:last-child div:first').click();
+
+  // clicks on the start button
   cy.get('.btn-wrapper-small').click();
+  
   // checks if generated code exists
   cy.get('.code-label').find('.code');
 }
