@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import socketIOClient from 'socket.io-client';
 
 //change this when it will be hosted
-const ENDPOINT = 'http://localhost:8080/';
+const ENDPOINT = env.process.REACT_APP_API_URL;
 const socket = socketIOClient(ENDPOINT);
 
 export default function ClientComponent() {

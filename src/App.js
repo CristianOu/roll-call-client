@@ -12,7 +12,7 @@ import UnauthorizedPage from './pages/unauthorized-page/UnauthorizedPage';
 import PersistLogin from './components/persist-login/PersistLogin';
 import useAuth from './hooks/useAuth';
 //change this when it will be hosted
-const ENDPOINT = 'http://localhost:8080/';
+const ENDPOINT = env.process.REACT_APP_API_URL;
 const socket = socketIOClient(ENDPOINT);
 
 function App() {
