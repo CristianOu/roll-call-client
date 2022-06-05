@@ -130,12 +130,14 @@ const signOut =
   async ({ navigate }) => {
     try {
       const response = await http.get('/logout');
+
+      if (response.data) {
+        dispatch({ type: ACTIONS.SIGN_OUT });
+        navigate('/login', { replace: true });
+      }
     } catch (err) {
       console.log(err);
     }
-
-    dispatch({ type: ACTIONS.SIGN_OUT });
-    navigate('/login', { replace: true });
   };
 
 export const { Provider, Context } = createDataContext(
