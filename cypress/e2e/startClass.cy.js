@@ -1,7 +1,4 @@
-import http from '../../src/services/http.service';
-
 describe ('Start a class', () => {
-
     it.only("start a class", () => {
       login("v-kane@yahoo.com", "JmE95osSMM4bYF");
       selectAndStartClass();
