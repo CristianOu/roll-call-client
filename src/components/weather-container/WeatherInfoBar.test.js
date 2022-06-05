@@ -31,7 +31,7 @@ beforeAll(() => server.listen())
 afterEach(() => server.resetHandlers())
 afterAll(() => server.close())
 
-test('loads and displays greeting', async () => {
+test('loads and displays weather info ', async () => {
     render(<WeatherInfoBar/>)
     await screen.findByTestId('temperature');
     expect(await screen.findByTestId('temperature')).toBeInTheDocument()

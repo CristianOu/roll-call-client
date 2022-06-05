@@ -193,13 +193,17 @@ function StatisticsPage() {
             axios
                 .get(`/api/users/students/attendance/${userId}`)
                 .then((response) => {
-                    setTableData(mapStudentStatsToTableData(response.data));
-                    setLoading(false);
-                    setError(undefined);
+                    if (response.data.message === 'Something went wrong') {
+                        setError('No courses to show.');
+                    } else {
+                        setTableData(mapStudentStatsToTableData(response.data));
+                        setLoading(false);
+                        setError(undefined);
+                    }
                 })
-                .catch(() => {
+                .catch((error) => {
                     setLoading(false);
-                    setError('Something went wrong');
+                    setError('No courses to show.');
                 });
         }
     }, [isTeacher, userId]);
@@ -247,7 +251,7 @@ function StatisticsPage() {
 
     const render = () => {
         if (error) {
-            return <text>{error}</text>;
+            return <text style={{fontSize: 22, marginLeft:'20%'}}>{error}</text>;
         }
 
         if (loading) {

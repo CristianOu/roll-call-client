@@ -24,10 +24,10 @@ function SideBar({className}) {
 
   const generateOptions = (options) => {
     return options.map((option) => (
-      <NavLink key={option.key} to={option.link} activeClassName={`${isActivePage(option.link) ? true : false}` }>
+      <NavLink key={option.key} to={option.link} activeClassName={`${(isActivePage(option.link))}` }>
         <div className="option-container" >
           {option.icon}
-          <span>{option.value}</span>
+          <span data-cy={option.value}>{option.value}</span>
         </div>
       </NavLink>
     ));
