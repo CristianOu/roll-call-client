@@ -30,6 +30,14 @@ Cypress.Commands.add('login', (email, password) => {
   cy.get("input[type='email']").type(email);
   cy.get("input[type='password']").type(password);
   cy.get("button[type='submit']").click();
+
+  //check whether neccessary data is loaded
+  cy.get("div[class='side-bar-container']");
+  cy.get("div[class='options-container']");
+  cy.get("div[class='logo']");
+  cy.get("div[class='top-bar-container']");
+  cy.get("div[class='utility-bar']");
+  cy.get("div[class='students-section empty']");
 });
 
 Cypress.Commands.add('logout', () => {
