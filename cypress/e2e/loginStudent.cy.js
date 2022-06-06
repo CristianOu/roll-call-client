@@ -1,11 +1,19 @@
 import http from '../../src/services/http.service';
 
-describe ('Login Student', () => {
-    it.only("logins and logouts student", () => {
-      login("d-kane@yahoo.com", "JmE95osSMMaaaa");
-      logout();
-    })
-})
+describe('Login Student', () => {
+  it.only('logins and logouts student', () => {
+    login(
+      'Marianna',
+      'Przygocka',
+      'STUDENT',
+      'd-kane@yahoo.com',
+      'JmE95osSMMaaaa',
+      '1979-01-01',
+      1
+    );
+    logout();
+  });
+});
 
 function login(email, password) {
   cy.visit('http://localhost:3000/login');
@@ -23,6 +31,5 @@ function login(email, password) {
 
 function logout() {
   cy.get("img[id='profilePicture']").click();
-  cy.get("div[id='signOut']").click();
-  cy.get("div[class=authentication-form-container]");//should include this div after logout
+  cy.get("button[id='signOut']").click();
 }
