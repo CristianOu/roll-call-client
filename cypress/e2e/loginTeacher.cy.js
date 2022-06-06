@@ -3,7 +3,7 @@ import http from '../../src/services/http.service';
 describe ('Login Teacher', () => {
 
     it.only("logins and logouts teacher", () => {
-      login"teacher2@gmail.com", "123$");
+      login("teacher2@gmail.com", "123$");
       logout();
     })
 })
