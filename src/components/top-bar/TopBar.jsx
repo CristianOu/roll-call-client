@@ -31,12 +31,14 @@ const renderer = ({ minutes, seconds, completed }) => {
   }
 };
 
-function ProfileModal({ signOut, navigator }) {
+function ProfileModal({ handleSignOut }) {
   return (
     <div className="modal-container">
       <div className="option">Profile</div>
-      <div id="signOut" className="option" onClick={() => signOut({ navigator })}>
-        Sign Out
+      <div className="option">
+        <button id="signOut" className="option" onClick={handleSignOut}>
+          Sign Out
+        </button>
       </div>
     </div>
   );
@@ -57,6 +59,10 @@ function TopBar({ generateCode, joinClass, code }) {
 
   const handleLectureChange = (option) => {
     setselectedLecture(option.value);
+  };
+
+  const handleSignOut = () => {
+    signOut({ navigate });
   };
 
   console.log(selectedLecture);
@@ -97,7 +103,12 @@ function TopBar({ generateCode, joinClass, code }) {
               // <input type="text" id="code" />,
               <CustomInput id="code" />,
 
-              <CustomButton title="Join Class" variant="info" action={joinClass} />
+              <CustomButton
+                title="Join Class"
+                variant="info"
+                action={joinClass}
+                id="join-class"
+              />
             ]
           : null}
 
@@ -122,9 +133,14 @@ function TopBar({ generateCode, joinClass, code }) {
         ) : null}
       </div>
       <div className="profile-img-container">
-        <img id="profilePicture" src={ProfileIcon} alt="icon" onClick={() => setToggleModal(!toggleModal)} />
+        <img
+          id="profilePicture"
+          src={ProfileIcon}
+          alt="icon"
+          onClick={() => setToggleModal(!toggleModal)}
+        />
       </div>
-      {toggleModal ? <ProfileModal signOut={signOut} navigator={navigate} /> : ''}
+      {toggleModal ? <ProfileModal handleSignOut={handleSignOut} /> : ''}
     </div>
   );
 }

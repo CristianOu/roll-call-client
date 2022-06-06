@@ -131,7 +131,7 @@ const signOut =
     try {
       const response = await http.get('/logout');
 
-      if (response.data) {
+      if (response) {
         dispatch({ type: ACTIONS.SIGN_OUT });
         navigate('/login', { replace: true });
       }
