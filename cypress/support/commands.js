@@ -23,3 +23,17 @@
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
+
+// Reusable commands
+Cypress.Commands.add('login', (email, password) => {
+  cy.visit('http://localhost:3000/login');
+  cy.get("input[type='email']").type(email);
+  cy.get("input[type='password']").type(password);
+  cy.get("button[type='submit']").click();
+});
+
+Cypress.Commands.add('logout', () => {
+  cy.get("img[id='profilePicture']").click();
+  cy.get("button[id='signOut']").click();
+  cy.url().should('be.equal', `${Cypress.config('baseUrl')}/login`);
+});
