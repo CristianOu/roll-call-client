@@ -110,7 +110,7 @@ function StatisticsTable({columns, data}) {
     const render = () => {
         return (
             <>
-                <table {...getTableProps()}>
+                <table {...getTableProps()} data-cy={'statisticsTable'}>
                     <thead>
                     {headerGroups.map(headerGroup => (
                         <tr {...headerGroup.getHeaderGroupProps()}>
